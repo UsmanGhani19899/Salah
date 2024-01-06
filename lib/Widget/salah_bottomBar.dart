@@ -28,50 +28,57 @@ class _SalahBottomBarState extends State<SalahBottomBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: screen[_currentIndex],
-      // backgroundColor: Colors.black,
-      bottomNavigationBar: BottomNavigationBar(
-          elevation: 0,
-          type: BottomNavigationBarType.fixed,
-          fixedColor: Colors.black,
-          showSelectedLabels: true,
-          // unselectedLabelStyle: TextStyle(color: Colors.white),
-          unselectedItemColor: Colors.black,
-          showUnselectedLabels: true,
-          backgroundColor: Colors.white,
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(
-                FeatherIcons.clock,
-                // color: Colors.white,
-              ),
-              label: "Time",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                FeatherIcons.mapPin,
-                // color: Colors.white,
-              ),
-              label: "Nearby",
-            ),
-            BottomNavigationBarItem(
+      backgroundColor: Colors.white,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+            color: Colors.grey.shade200,
+            borderRadius: BorderRadius.circular(20)),
+        height: 80,
+        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+        child: BottomNavigationBar(
+            elevation: 0,
+            type: BottomNavigationBarType.fixed,
+            fixedColor: Colors.black,
+            showSelectedLabels: true,
+            // unselectedLabelStyle: TextStyle(color: Colors.white),
+            unselectedItemColor: Colors.black,
+            showUnselectedLabels: true,
+            backgroundColor: Colors.transparent,
+            currentIndex: _currentIndex,
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            items: const [
+              BottomNavigationBarItem(
                 icon: Icon(
-                  FeatherIcons.compass,
+                  FeatherIcons.clock,
                   // color: Colors.white,
                 ),
-                label: "Direction"),
-            BottomNavigationBarItem(
+                label: "Time",
+              ),
+              BottomNavigationBarItem(
                 icon: Icon(
-                  FeatherIcons.book,
+                  FeatherIcons.mapPin,
                   // color: Colors.white,
                 ),
-                label: "Activity"),
-          ]),
+                label: "Nearby",
+              ),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    FeatherIcons.compass,
+                    // color: Colors.white,
+                  ),
+                  label: "Direction"),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    FeatherIcons.book,
+                    // color: Colors.white,
+                  ),
+                  label: "Activity"),
+            ]),
+      ),
     );
   }
 }

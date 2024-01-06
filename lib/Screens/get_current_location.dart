@@ -7,6 +7,12 @@ import 'package:flutter_compass/flutter_compass.dart';
 // import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'package:flutter_qiblah/flutter_qiblah.dart';
+import 'package:salah/Screens/home.dart';
+import 'package:salah/Screens/tasbeeh.dart';
+import 'package:salah/Widget/compass_custome.dart';
+import 'package:salah/Widget/qiblah_map.dart';
+
 class QiblahScreen extends StatefulWidget {
   const QiblahScreen({super.key});
 
@@ -32,6 +38,7 @@ class _QiblahScreenState extends State<QiblahScreen>
     super.initState();
   }
 
+  final _deviceSupport = FlutterQiblah.androidDeviceSensorSupport();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -40,25 +47,26 @@ class _QiblahScreenState extends State<QiblahScreen>
         appBar: AppBar(
           title: const Text('Flutter Compass'),
         ),
-        body: Builder(builder: (context) {
-          if (_hasPermissions) {
-            return Column(
-              children: <Widget>[
-                _buildManualReader(),
-                Expanded(child: _buildCompass()),
-                Text(
-                  'correct',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 40),
-                ),
-              ],
-            );
-          } else {
-            return _buildPermissionSheet();
-          }
-        }),
+        body: Container(
+          height: 300,
+          // color: Colors.black,
+          child: FutureBuilder(
+            future: _deviceSupport,
+            builder: (_, AsyncSnapshot<bool?> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting)
+                return CircularProgressIndicator();
+              if (snapshot.hasError)
+                return Center(
+                  child: Text("Error: ${snapshot.error.toString()}"),
+                );
+
+              if (snapshot.data!)
+                return QiblahCompass();
+              else
+                return QiblahMaps();
+            },
+          ),
+        ),
       ),
     );
   }

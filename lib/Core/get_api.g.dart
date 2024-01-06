@@ -52,6 +52,7 @@ class _GetApi implements GetApi {
   Future<PrayerTimeModel>? getPrayerTime(
     String country,
     String city,
+    String day,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -65,7 +66,7 @@ class _GetApi implements GetApi {
     )
             .compose(
               _dio.options,
-              'http://api.aladhan.com/v1/timingsByCity?&country=${country}&city=${city}&method=3',
+              'http://api.aladhan.com/v1/timingsByCity?&country=${country}&city=${city}&method=${day}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -102,6 +103,33 @@ class _GetApi implements GetApi {
               baseUrl,
             ))));
     final value = AsmaUlHusnaModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<IslamicCalenderModel> getCalender(String date) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<IslamicCalenderModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'https://api.aladhan.com/v1/gToH/${date}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = IslamicCalenderModel.fromJson(_result.data!);
     return value;
   }
 

@@ -10,6 +10,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:salah/Core/get_api.dart';
+import 'package:salah/Core/get_constants.dart';
 import 'package:salah/Models/nearby_places_model.dart';
 import 'package:salah/Screens/map.dart';
 
@@ -35,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   double? lat;
   String? _currentAddress;
   Position? _currentPosition;
-
+  Constant constant = Constant();
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -139,11 +140,12 @@ class _HomeScreenState extends State<HomeScreen> {
   // }
 
   Future<void> apis() async {
-    await _getCurrentPosition();
-    await getPlaces();
-    // await getAddress(lng.toString(), lat.toString());
     await getAddressFromLatLng(
         _currentPosition?.latitude ?? 0, _currentPosition?.longitude ?? 0);
+    await _getCurrentPosition();
+
+    await getPlaces();
+    // await getAddress(lng.toString(), lat.toString());
 
     print(address);
     setState(() {});
@@ -175,7 +177,8 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: 80,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xff7FFCF4),
+        centerTitle: true,
         elevation: 0,
         title: Text(
           "صلاة",

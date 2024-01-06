@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:salah/Core/get_constants.dart';
 import 'package:salah/Screens/home.dart';
 import 'package:salah/Screens/select_location.dart';
 import 'package:salah/Widget/custom_roundedBtn.dart';
@@ -26,6 +27,8 @@ String stateValue = "";
 String cityValue = "";
 
 class _SelectCountryState extends State<SelectCountry> {
+  Constant constant = Constant();
+
   String? selectedCountry = "No Country Selected";
   @override
   Widget build(BuildContext context) {
@@ -114,6 +117,10 @@ class _SelectCountryState extends State<SelectCountry> {
                                     onCountryChanged: (value) {
                                       setState(() {
                                         countryValue = value.toString();
+                                        constant.box.write(
+                                          'country',
+                                          countryValue.substring(8),
+                                        );
                                       });
                                     },
                                     onStateChanged: (value) {
@@ -124,6 +131,10 @@ class _SelectCountryState extends State<SelectCountry> {
                                     onCityChanged: (value) {
                                       setState(() {
                                         cityValue = value.toString();
+                                        constant.box.write(
+                                          'city',
+                                          cityValue,
+                                        );
                                       });
                                     },
                                   ),

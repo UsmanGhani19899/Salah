@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -17,9 +18,9 @@ class SalahSplash extends StatefulWidget {
 class _SalahSplashState extends State<SalahSplash> {
   @override
   void initState() {
-    // Timer(Duration(seconds: 3), () {
-    //   Get.offAll(SelectCountry());
-    // });
+    Timer(Duration(seconds: 3), () {
+      Get.offAll(SelectCountry());
+    });
     // TODO: implement initState
     super.initState();
   }
@@ -27,48 +28,42 @@ class _SalahSplashState extends State<SalahSplash> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xff2A323f),
-        body: Container(
-          // alignment: Alignment.center,
-          height: Get.height,
-          width: Get.width,
-          // foregroundDecoration: BoxDecoration(color: Colors.grey.shade200),
-          // decoration: BoxDecoration(
-          //     image: DecorationImage(
-          //         colorFilter: ColorFilter.mode(
-          //             Colors.grey.shade900.withOpacity(0.9), BlendMode.darken),
-          //         image: AssetImage('assets/images/splash.jpg'),
-          //         fit: BoxFit.cover)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            // alignment: Alignment.bottomCenter,
-            children: [
-              SizedBox(),
-              Text(
-                'صلاح',
-                style: GoogleFonts.roboto(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 90),
+        backgroundColor: Colors.white,
+        body: Stack(
+          children: [
+            Image(
+              image: AssetImage('assets/images/splash.jpg'),
+              // color: Colors.black,
+              height: Get.height,
+              width: Get.width,
+              fit: BoxFit.cover,
+            ),
+            Container(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(color: Colors.transparent),
               ),
-              // SvgPicture.asset(
-              //   // alignment: Alignment.topCenter,
-
-              //   'assets/images/masjid.svg',
-              //   semanticsLabel: 'Acme Logo',
-              //   width: Get.width,
-              //   height: Get.height * 0.9,
-              //   fit: BoxFit.cover,
-              // ),
-              Image(
-                image: AssetImage('assets/images/prayer.png'),
-                color: Colors.green.withOpacity(0.4),
-                height: Get.height * 0.35,
+            ),
+            Container(
+                alignment: Alignment.center,
+                // alignment: Alignment.center,
+                height: Get.height,
                 width: Get.width,
-                fit: BoxFit.cover,
-              )
-            ],
-          ),
+                // foregroundDecoration: BoxDecoration(color: Colors.grey.shade200),
+                // decoration: BoxDecoration(
+                //     image: DecorationImage(
+                //         colorFilter: ColorFilter.mode(
+                //             Colors.grey.shade900.withOpacity(0.9), BlendMode.darken),
+                //         image: AssetImage('assets/images/splash.jpg'),
+                //         fit: BoxFit.cover)),
+                child: Text(
+                  'صلاۃ',
+                  style: GoogleFonts.notoSansArabic(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 90),
+                )),
+          ],
         ),
       ),
     );

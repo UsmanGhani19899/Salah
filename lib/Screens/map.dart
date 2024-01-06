@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:salah/Core/get_constants.dart';
 
 class SalahMap extends StatefulWidget {
   final double lat;
@@ -21,6 +22,7 @@ Map<MarkerId, Marker> _markersId = <MarkerId, Marker>{};
 //   _controller.complete(controller);
 // }
 late GoogleMapController _mapController;
+Constant constant = Constant();
 
 class Salah_MapState extends State<SalahMap> {
   @override

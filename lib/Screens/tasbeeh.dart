@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:salah/Widget/custom_roundedBtn.dart';
+import 'dart:math' as math;
 
 class TasbeehScreen extends StatefulWidget {
   const TasbeehScreen({super.key});
@@ -12,7 +13,8 @@ class TasbeehScreen extends StatefulWidget {
 }
 
 int _counter = 0;
-String? tasbeehName = "الحمد لله";
+String? tasbeehName = "";
+int index = 0;
 
 class _TasbeehScreenState extends State<TasbeehScreen> {
   @override
@@ -20,14 +22,33 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
     return GestureDetector(
       onTap: () {
         setState(() {
+          index++;
           _counter++;
-          if (_counter > 33) {
+          if (index <= 33) {
+            tasbeehName = 'الحمد لله';
+            setState(() {
+              // _counter = 0;
+            });
+          } else if (index > 33 && index <= 66) {
             tasbeehName = "أَسْتَغْفِرُ ٱللَّٰه";
-            setState(() {});
+            setState(() {
+              // _counter = 0;
+            });
+          } else if (index > 66 && index <= 99) {
+            tasbeehName = "الله أكبر";
+            setState(() {
+              // _counter = 0;
+            });
+          } else if (index > 99) {
+            tasbeehName = "الله أكبر";
+            setState(() {
+              // _counter = 0;
+            });
           }
         });
       },
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: Container(
           // padding: EdgeInsets.symmetric(vertical: 60),
           height: Get.height,
@@ -58,7 +79,7 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
                   icon: Icons.replay_outlined,
                   onTap: () {
                     setState(() {
-                      _counter++;
+                      _counter = 0;
                     });
                   })
             ],

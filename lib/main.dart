@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:salah/Screens/home.dart';
 import 'package:salah/Screens/map.dart';
 import 'package:salah/Screens/salah_splash.dart';
@@ -7,7 +8,7 @@ import 'package:salah/Widget/salah_bottomBar.dart';
 import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 
-void main() {
+void main() async {
   runApp(Salah());
   final GoogleMapsFlutterPlatform mapsImplementation =
       GoogleMapsFlutterPlatform.instance;
@@ -15,6 +16,7 @@ void main() {
     // Force Hybrid Composition mode.
     mapsImplementation.useAndroidViewSurface = true;
   }
+  await GetStorage.init();
 }
 
 class Salah extends StatefulWidget {
@@ -30,7 +32,7 @@ class _SalahState extends State<Salah> {
     return GetMaterialApp(
       theme: ThemeData(scaffoldBackgroundColor: Colors.white),
       debugShowCheckedModeBanner: false,
-      home: SalahBottomBar(),
+      home: SalahSplash(),
     );
   }
 }
