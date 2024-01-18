@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:salah/Screens/Activity/audio_player.dart';
+import 'package:salah/Screens/detailed_surah.dart';
 import 'package:salah/Screens/home.dart';
 import 'package:salah/Screens/map.dart';
 import 'package:salah/Screens/salah_splash.dart';
@@ -30,7 +32,7 @@ class _SalahState extends State<Salah> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      theme: ThemeData(scaffoldBackgroundColor: Colors.white),
+      theme: ThemeData(scaffoldBackgroundColor: Color(0xff172222)),
       debugShowCheckedModeBanner: false,
       home: SalahSplash(),
     );

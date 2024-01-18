@@ -117,10 +117,6 @@ class _SelectCountryState extends State<SelectCountry> {
                                     onCountryChanged: (value) {
                                       setState(() {
                                         countryValue = value.toString();
-                                        constant.box.write(
-                                          'country',
-                                          countryValue.substring(8),
-                                        );
                                       });
                                     },
                                     onStateChanged: (value) {
@@ -131,10 +127,6 @@ class _SelectCountryState extends State<SelectCountry> {
                                     onCityChanged: (value) {
                                       setState(() {
                                         cityValue = value.toString();
-                                        constant.box.write(
-                                          'city',
-                                          cityValue,
-                                        );
                                       });
                                     },
                                   ),
@@ -217,6 +209,14 @@ class _SelectCountryState extends State<SelectCountry> {
             CustomRoundedBtn(
                 icon: Icons.arrow_forward_ios_rounded,
                 onTap: () {
+                  constant.box.write(
+                    'city',
+                    cityValue,
+                  );
+                  constant.box.write(
+                    'country',
+                    countryValue.substring(8),
+                  );
                   Get.offAll(SalahBottomBar());
                 })
           ],

@@ -58,6 +58,10 @@ dependencies:
   intl: ^0.17.0
   date_picker_timeline_fixed: ^2.0.0
   flutter_qiblah: ^2.2.0
+  audioplayers: ^5.2.1
+  flutter_local_notifications: ^16.3.0
+  map_launcher: ^3.1.0
+  # location: ^5.0.3
   # expansion_tile_card: ^3.0.0
   
 

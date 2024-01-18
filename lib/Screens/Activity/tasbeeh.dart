@@ -48,7 +48,7 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
         });
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 169, 165, 165),
         body: Container(
           // padding: EdgeInsets.symmetric(vertical: 60),
           height: Get.height,

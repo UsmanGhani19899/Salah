@@ -104,77 +104,106 @@ class _PrayerTimeScreenState extends State<PrayerTimeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          toolbarHeight: 80,
-          centerTitle: true,
-          title: fullDate == ""
-              ? CircularProgressIndicator(
-                  color: Colors.blue,
-                )
-              : Column(
-                  children: [
-                    Text('${day} ${month}, ${year} AH',
-                        style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                            color: Colors.black)),
-                    Text(
-                      '$fullDate',
-                      style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w300, fontSize: 12),
-                    ),
-                  ],
-                ),
-        ),
-        backgroundColor: Colors.white,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            backgroundColor: Colors.transparent,
+            toolbarHeight: 60,
+            // centerTitle: true,
+            title: Text(
+              'Prayer Time',
+              style: GoogleFonts.roboto(
+                  color: Colors.white, fontWeight: FontWeight.bold),
+            )),
+        backgroundColor: Color(0xff172222),
+        body: Stack(
+          alignment: Alignment.bottomCenter,
           children: [
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
-              height: 100,
-              width: Get.width,
-              child: DatePicker(
-                DateTime.now(),
-                initialSelectedDate: DateTime.now(),
-                selectionColor: Colors.black,
-                selectedTextColor: Colors.white,
-                onDateChange: (date) {
-                  // New date selected
-                  setState(() {
-                    _selectedValue = date.day.toString();
-                    print('$_selectedValue didi');
-                    getTime();
-                  });
-                },
-              ),
-            ),
-            Container(
-              child: Column(
-                children: [
-                  CustomNamazCard(
-                    namazName: 'Fajr',
-                    namazTime: fajr,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Container(
+                //   margin: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                //   decoration: BoxDecoration(
+                //       color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                //   height: 100,
+                //   width: Get.width,
+                //   child: DatePicker(
+                //     DateTime.now(),
+                //     initialSelectedDate: DateTime.now(),
+                //     selectionColor: Colors.black,
+                //     selectedTextColor: Colors.white,
+                //     onDateChange: (date) {
+                //       // New date selected
+                //       setState(() {
+                //         _selectedValue = date.day.toString();
+                //         print('$_selectedValue didi');
+                //         getTime();
+                //       });
+                //     },
+                //   ),
+                // ),
+                fullDate == ""
+                    ? CircularProgressIndicator(
+                        color: Colors.blue,
+                      )
+                    : Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        height: Get.height * 0.15,
+                        width: Get.width,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20)),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('${day} ${month}, ${year} AH',
+                                style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25,
+                                    color: Colors.black)),
+                            Text(
+                              '$fullDate',
+                              style: GoogleFonts.roboto(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  child: Column(
+                    children: [
+                      CustomNamazCard(
+                        namazName: 'Fajr',
+                        namazTime: fajr,
+                      ),
+                      CustomNamazCard(
+                        namazName: 'Dhuhr',
+                        namazTime: dhuhr,
+                      ),
+                      CustomNamazCard(
+                        namazName: 'Asr',
+                        namazTime: asr,
+                      ),
+                      CustomNamazCard(
+                        namazName: 'Magrib',
+                        namazTime: magrib,
+                      ),
+                      CustomNamazCard(
+                        namazName: 'Isha',
+                        namazTime: isha,
+                      ),
+                    ],
                   ),
-                  CustomNamazCard(
-                    namazName: 'Dhuhr',
-                    namazTime: dhuhr,
-                  ),
-                  CustomNamazCard(
-                    namazName: 'Asr',
-                    namazTime: asr,
-                  ),
-                  CustomNamazCard(
-                    namazName: 'Magrib',
-                    namazTime: magrib,
-                  ),
-                  CustomNamazCard(
-                    namazName: 'Isha',
-                    namazTime: isha,
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ));

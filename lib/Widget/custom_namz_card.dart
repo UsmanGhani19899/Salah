@@ -17,7 +17,9 @@ class CustomNamazCard extends StatelessWidget {
       height: Get.height * 0.1,
       width: Get.width,
       decoration: BoxDecoration(
-          color: Colors.grey.shade100, borderRadius: BorderRadius.circular(20)),
+          border: Border.all(color: Colors.grey.shade600, width: 0.4),
+          // color: Colors.grey.shade900.withOpacity(0.8),
+          borderRadius: BorderRadius.circular(15)),
       // color: Color(0xff232323),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -27,7 +29,7 @@ class CustomNamazCard extends StatelessWidget {
             Text(
               '$namazName',
               style: GoogleFonts.roboto(
-                  color: Colors.black,
+                  color: Colors.white,
                   fontWeight: FontWeight.w400,
                   fontSize: 25),
             ),
@@ -37,7 +39,7 @@ class CustomNamazCard extends StatelessWidget {
                     ? Text(
                         namazTime!,
                         style: GoogleFonts.roboto(
-                            color: Colors.black,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 25),
                       )
@@ -49,7 +51,7 @@ class CustomNamazCard extends StatelessWidget {
                 ),
                 Icon(
                   FeatherIcons.bell,
-                  color: Colors.black,
+                  color: Colors.white,
                 )
               ],
             )

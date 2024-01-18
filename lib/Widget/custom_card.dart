@@ -13,20 +13,35 @@ class CustomCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12),
+        decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(0)),
         margin: EdgeInsets.all(8),
-        width: Get.width * 0.45,
+        width: Get.width,
         height: Get.height * 0.2,
-        color: Colors.grey.shade900,
-        child: Column(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(
-              iconData,
-              color: Colors.white,
-            ),
             Text(
               '$cardName',
-              style: GoogleFonts.roboto(color: Colors.white),
-            )
+              style: GoogleFonts.roboto(
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            CircleAvatar(
+              backgroundColor: Colors.blue,
+              radius: 30,
+              child: Icon(
+                Icons.arrow_forward,
+                color: Colors.white,
+                size: 20,
+              ),
+            ),
           ],
         ),
       ),

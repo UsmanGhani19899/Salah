@@ -1,17 +1,14 @@
+// import 'dart:math';
+
 import 'dart:math';
-import 'dart:math' as math;
+
+import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_compass/flutter_compass.dart';
-// import 'package:flutter_qiblah/flutter_qiblah.dart';
-import 'package:permission_handler/permission_handler.dart';
-
 import 'package:flutter_qiblah/flutter_qiblah.dart';
-import 'package:salah/Screens/home.dart';
-import 'package:salah/Screens/tasbeeh.dart';
-import 'package:salah/Widget/compass_custome.dart';
-import 'package:salah/Widget/qiblah_map.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 
 class QiblahScreen extends StatefulWidget {
   const QiblahScreen({super.key});
@@ -23,171 +20,68 @@ class QiblahScreen extends StatefulWidget {
 Animation<double>? animation;
 AnimationController? _animationController;
 double begin = 0.0;
-bool _hasPermissions = false;
-CompassEvent? _lastRead;
-DateTime? _lastReadAt;
 
 class _QiblahScreenState extends State<QiblahScreen>
     with SingleTickerProviderStateMixin {
   @override
   void initState() {
-    _fetchPermissionStatus();
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 500));
     animation = Tween(begin: 0.0, end: 0.0).animate(_animationController!);
     super.initState();
   }
 
-  final _deviceSupport = FlutterQiblah.androidDeviceSensorSupport();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: const Text('Flutter Compass'),
-        ),
-        body: Container(
-          height: 300,
-          // color: Colors.black,
-          child: FutureBuilder(
-            future: _deviceSupport,
-            builder: (_, AsyncSnapshot<bool?> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting)
-                return CircularProgressIndicator();
-              if (snapshot.hasError)
-                return Center(
-                  child: Text("Error: ${snapshot.error.toString()}"),
-                );
+        body: StreamBuilder(
+          stream: FlutterQiblah.qiblahStream,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Container(
+                  alignment: Alignment.center,
+                  child: const CircularProgressIndicator(
+                    color: Colors.white,
+                  ));
+            }
 
-              if (snapshot.data!)
-                return QiblahCompass();
-              else
-                return QiblahMaps();
-            },
-          ),
-        ),
-      ),
-    );
-  }
+            final qiblahDirection = snapshot.data;
+            animation = Tween(
+                    begin: begin,
+                    end: (qiblahDirection!.qiblah * (pi / 180) * -1))
+                .animate(_animationController!);
+            begin = (qiblahDirection.qiblah * (pi / 180) * -1);
+            _animationController!.forward(from: 0);
 
-  Widget _buildManualReader() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: <Widget>[
-          ElevatedButton(
-            child: Text('Read Value'),
-            onPressed: () async {
-              final CompassEvent tmp = await FlutterCompass.events!.first;
-              setState(() {
-                _lastRead = tmp;
-                _lastReadAt = DateTime.now();
-              });
-            },
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
+            return Center(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    '$_lastRead',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  Text(
-                    '$_lastReadAt',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "${qiblahDirection.direction.toInt()}°",
+                      style: const TextStyle(color: Colors.white, fontSize: 24),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                        height: Get.height * 0.4,
+                        child: AnimatedBuilder(
+                          animation: animation!,
+                          builder: (context, child) => Transform.rotate(
+                              angle: animation!.value,
+                              child: Image.asset(
+                                'assets/images/qibla.png',
+                                // color: Colors.grey.shade100,
+                              )),
+                        ))
+                  ]),
+            );
+          },
+        ),
       ),
     );
-  }
-
-  Widget _buildCompass() {
-    return StreamBuilder<CompassEvent>(
-      stream: FlutterCompass.events,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text('Error reading heading: ${snapshot.error}');
-        }
-
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        double? direction = snapshot.data!.heading;
-
-        // if direction is null, then device does not support this sensor
-        // show error message
-        if (direction == null)
-          return Center(
-            child: Text("Device does not have sensors !"),
-          );
-        print('${direction} dede');
-        return Material(
-          shape: CircleBorder(),
-          clipBehavior: Clip.antiAlias,
-          elevation: 4.0,
-          child: Container(
-            padding: EdgeInsets.all(16.0),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: direction == 174.4955091772721
-                  ? Colors.green
-                  : Colors.transparent,
-              shape: BoxShape.circle,
-            ),
-            child: Transform.rotate(
-              angle: (direction * (math.pi / 180) * -1),
-              child: Image.asset('assets/images/qibla.png'),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildPermissionSheet() {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text('Location Permission Required'),
-          ElevatedButton(
-            child: Text('Request Permissions'),
-            onPressed: () {
-              Permission.locationWhenInUse.request().then((ignored) {
-                _fetchPermissionStatus();
-              });
-            },
-          ),
-          SizedBox(height: 16),
-          ElevatedButton(
-            child: Text('Open App Settings'),
-            onPressed: () {
-              openAppSettings().then((opened) {
-                //
-              });
-            },
-          )
-        ],
-      ),
-    );
-  }
-
-  void _fetchPermissionStatus() {
-    Permission.locationWhenInUse.status.then((status) {
-      if (mounted) {
-        setState(() => _hasPermissions = status == PermissionStatus.granted);
-      }
-    });
   }
 }

@@ -20,8 +20,8 @@ class _GetApi implements GetApi {
 
   @override
   Future<NearbyPlaces> getNearbyPlaces(
-    String latitude,
-    String longitude,
+    double latitude,
+    double longitude,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -130,6 +130,87 @@ class _GetApi implements GetApi {
               baseUrl,
             ))));
     final value = IslamicCalenderModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<QuranReciter> getReciters() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<QuranReciter>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'https://www.mp3quran.net/api/v3/reciters?language=eng',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = QuranReciter.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<SurahModel> getSurah() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<SurahModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'https://www.mp3quran.net/api/v3/suwar?language=eng',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = SurahModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<QuranDetailTextModel> getDetailSSurah() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<QuranDetailTextModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'https://api.alquran.cloud/v1/quran/ar.alafasy',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = QuranDetailTextModel.fromJson(_result.data!);
     return value;
   }
 
