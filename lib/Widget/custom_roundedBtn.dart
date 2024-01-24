@@ -12,7 +12,9 @@ class CustomRoundedBtn extends StatelessWidget {
       child: Container(
         height: 60,
         width: 60,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+        ),
         child: Icon(
           icon,
           color: Colors.white,

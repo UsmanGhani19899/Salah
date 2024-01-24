@@ -1,11 +1,17 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:csc_picker/csc_picker.dart';
+import 'package:csc_picker/model/select_status_model.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:salah/Core/dio.dart';
+import 'package:salah/Core/get_api.dart';
 import 'package:salah/Core/get_constants.dart';
+import 'package:salah/Models/city_model.dart';
+import 'package:salah/Models/countries_model.dart';
+import 'package:salah/Screens/city_screen.dart';
 import 'package:salah/Screens/home.dart';
 import 'package:salah/Screens/select_location.dart';
 import 'package:salah/Widget/custom_roundedBtn.dart';
@@ -22,203 +28,247 @@ class SelectCountry extends StatefulWidget {
   State<SelectCountry> createState() => _SelectCountryState();
 }
 
+int selectedIndex = 0;
 String countryValue = "";
 String stateValue = "";
 String cityValue = "";
+final getApi = GetApi(dio);
 
 class _SelectCountryState extends State<SelectCountry> {
   Constant constant = Constant();
-
+  TextEditingController controller = TextEditingController();
   String? selectedCountry = "No Country Selected";
+  CountriesModel? countriesModel;
+  CityModel? cityModel;
+  List<Datum>? filteredList;
+  Future<void> getCountry() async {
+    countriesModel = await getApi.getCountries();
+    if (countriesModel!.data.isNotEmpty) {
+      filteredList = countriesModel?.data;
+    }
+    setState(() {});
+  }
+
+  Future<void> getCity() async {
+    cityModel = await getApi.getCity(filteredList![selectedIndex].iso2);
+    // if (countriesModel!.data.isNotEmpty) {
+    //   filteredList = countriesModel?.data;
+    // }
+    setState(() {});
+  }
+
+  Future<void> apis() async {
+    await getCountry();
+    await getCity();
+  }
+
   @override
+  void initState() {
+    apis();
+
+    // TODO: implement initState
+    super.initState();
+  }
+
+  Constant cons = Constant();
+  List<Datum> results = [];
+  List<String> city = [];
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 50),
+        margin: EdgeInsets.only(top: 40),
+        padding: EdgeInsets.symmetric(horizontal: 20),
         height: Get.height,
         width: Get.width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Column(
-              children: [
-                // Icon(
-                //   FeatherIcons.mapPin,
-                //   size: 90,
-                //   color: Colors.black,
-                // ),
-                SvgPicture.asset(
-                  'assets/images/mappin.svg',
-                  semanticsLabel: 'Acme Logo',
-                  width: 120,
-                  height: 120,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Choose Your Location",
-                  style: GoogleFonts.roboto(
-                      fontSize: 25,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Please select your location to help us for give you a better experience",
-                  style: GoogleFonts.roboto(
-                      color: Colors.grey, fontWeight: FontWeight.w400),
-                  textAlign: TextAlign.center,
-                )
-              ],
-            ),
-            Column(
-              children: [
-                countryValue == ""
-                    ? Text("Select Country")
-                    : Text(
-                        "${countryValue.substring(6)} , ${cityValue.toString()}",
-                        style: GoogleFonts.roboto(fontWeight: FontWeight.bold),
-                      ),
-                // Text(
-                //   "$selectedCountry",
-                //   style: GoogleFonts.roboto(color: Colors.black),
-                // ),
-                SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        shadowColor: Colors.transparent,
-                        foregroundColor: Colors.transparent,
-                        disabledForegroundColor: Colors.transparent,
-                        surfaceTintColor: Colors.transparent,
-                        disabledBackgroundColor: Colors.transparent,
-                        side: BorderSide(color: Colors.grey.shade300),
-                        elevation: 0,
-                        backgroundColor: Colors.transparent),
-                    onPressed: () {
-                      // Get.to(SelectLocation());
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (context) {
-                            return Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  CSCPicker(
-                                    dropdownDecoration: BoxDecoration(
-                                        color: Colors.grey.shade100),
-                                    onCountryChanged: (value) {
-                                      setState(() {
-                                        countryValue = value.toString();
-                                      });
-                                    },
-                                    onStateChanged: (value) {
-                                      setState(() {
-                                        stateValue = value.toString();
-                                      });
-                                    },
-                                    onCityChanged: (value) {
-                                      setState(() {
-                                        cityValue = value.toString();
-                                      });
-                                    },
-                                  ),
-                                  CustomRoundedBtn(
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      // if (countryValue != "" && stateValue != "" && cityValue != "") {
-                                      //   Get.offAll(SelectCountry(
-                                      //     cityValue: cityValue,
-                                      //     countryValue: countryValue,
-                                      //   ));
-                                      // } else if (countryValue == "" &&
-                                      //     stateValue == "" &&
-                                      //     cityValue == "") {
-                                      //   return showCustomSnackbar(context, "Please Select Location");
-                                      // } else if (countryValue == "" &&
-                                      //     stateValue != "" &&
-                                      //     cityValue != "") {
-                                      //   return showCustomSnackbar(context, "Please Select Country");
-                                      // } else if (countryValue != "" &&
-                                      //     stateValue == "" &&
-                                      //     cityValue != "") {
-                                      //   return showCustomSnackbar(context, "Please Select State");
-                                      // } else {
-                                      //   return showCustomSnackbar(context, "Please Select City");
-                                      // }
-                                    },
-                                    icon: Icons.arrow_forward_ios_rounded,
-                                  )
-                                ],
-                              ),
-                            );
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Icon(
+                  //   FeatherIcons.mapPin,
+                  //   size: 90,
+                  //   color: Colors.black,
+                  // ),
+                  // SvgPicture.asset(
+                  //   'assets/images/mappin.svg',
+                  //   color: Colors.white,
+                  //   semanticsLabel: 'Acme Logo',
+                  //   width: 120,
+                  //   height: 120,
+                  // ),
+                  // SizedBox(
+                  //   height: 20,
+                  // ),
+                  Text(
+                    "Select Location",
+                    style: GoogleFonts.roboto(
+                        fontSize: 25,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  Text(
+                    "Please select your location to help us for give you a better experience",
+                    style: GoogleFonts.roboto(
+                        color: Colors.grey, fontWeight: FontWeight.w400),
+                    textAlign: TextAlign.start,
+                  ),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: Get.width * 0.8,
+                    child: TextFormField(
+                      style: GoogleFonts.roboto(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                      controller: controller,
+                      onChanged: (val) {
+                        val = controller.text;
+                        if (val.isEmpty) {
+                          results = countriesModel!.data;
+
+                          setState(() {
+                            // selectedIndex = 0;
                           });
-                      // showCountryPicker(
-                      //   context: context,
-                      //   //Optional.  Can be used to exclude(remove) one ore more country from the countries list (optional).
-                      //   exclude: <String>['KN', 'MF'],
-                      //   favorite: <String>['SE'],
-                      //   //Optional. Shows phone code before the country name.
-                      //   showPhoneCode: true,
-                      //   onSelect: (Country country) {
-                      //     // print('Select country: ${country.displayName.}');
-                      //     setState(() {
-                      //       selectedCountry = country.name;
-                      //     });
-                      //   },
-                      //   // Optional. Sets the theme for the country list picker.
-                      //   countryListTheme: CountryListThemeData(
-                      //     // Optional. Sets the border radius for the bottomsheet.
-                      //     borderRadius: BorderRadius.only(
-                      //       topLeft: Radius.circular(40.0),
-                      //       topRight: Radius.circular(40.0),
-                      //     ),
-                      //     // Optional. Styles the search field.
-                      //     inputDecoration: InputDecoration(
-                      //       labelText: 'Search',
-                      //       hintText: 'Start typing to search',
-                      //       prefixIcon: const Icon(Icons.search),
-                      //       border: OutlineInputBorder(
-                      //         borderSide: BorderSide(
-                      //           color: const Color(0xFF8C98A8).withOpacity(0.2),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //     // Optional. Styles the text in the search field
-                      //     searchTextStyle: TextStyle(
-                      //       color: Colors.blue,
-                      //       fontSize: 18,
-                      //     ),
-                      //   ),
-                      // );
+                        } else {
+                          // selectedIndex = 0;
+                          results = countriesModel!.data
+                              .where((element) => element.name
+                                  .toLowerCase()
+                                  .contains(val.toLowerCase()))
+                              .toList();
+                          setState(() {});
+                        }
+
+                        setState(() {
+                          filteredList = results;
+                        });
+                        // if (val.isEmpty && countriesModel!.data.isNotEmpty) {
+                        //   filteredList.addAll(countriesModel!.data);
+                        //   setState(() {});
+                        // } else if (val.isNotEmpty) {
+                        //   countriesModel?.data.contains(controller.text);
+                        //   filteredList.addAll(countriesModel!.data);
+                        //   setState(() {});
+                        // }
+                      },
+                      validator: (val) =>
+                          val!.isEmpty ? "Please Enter Something" : null,
+                      decoration: InputDecoration(
+                          hintText: 'Serach',
+                          hintStyle: GoogleFonts.roboto(
+                              color: Colors.grey, fontWeight: FontWeight.bold),
+                          prefixIcon: Icon(FeatherIcons.search),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey)),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey))),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            Expanded(
+              // margin: EdgeInsets.symmetric(vertical: 10),
+              // height: 400,
+              child: filteredList?.isNotEmpty ?? false
+                  ? ListView.builder(
+                      itemCount: filteredList?.length,
+                      itemBuilder: (context, index) {
+                        if (filteredList?[index].name != "") {
+                          return GestureDetector(
+                            onTap: () {
+                              cons.box.write('selectedCountry',
+                                  cityModel?.geonames?[index].name);
+                              setState(() {
+                                selectedIndex = index;
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return CitySelectScreen(
+                                        countryName: filteredList![index]
+                                            .iso2
+                                            .toLowerCase(),
+                                      );
+                                    });
+                              });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: selectedIndex != index
+                                      ? Colors.grey.shade800.withOpacity(0.5)
+                                      : Color(0xff35c55e),
+                                  borderRadius: BorderRadius.circular(15)),
+                              margin: EdgeInsets.symmetric(vertical: 10),
+                              height: Get.height * 0.07,
+                              width: Get.width,
+                              child: ListTile(
+                                leading: Container(
+                                  width: 50,
+                                  height: 30,
+                                  child: SvgPicture.network(
+                                    '${filteredList?[index].flag}',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15)),
+                                title: Text(
+                                  '${filteredList?[index].name}',
+                                  style: GoogleFonts.roboto(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          );
+                        } else {
+                          return Center(
+                              child: CircularProgressIndicator(
+                            color: Color(0xff35c55e),
+                          ));
+                        }
+                      })
+                  : Center(
+                      child: CircularProgressIndicator(
+                      color: Color(0xff35c55e),
+                    )),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Container(
+                height: Get.height * 0.07,
+                width: Get.width,
+                child: ElevatedButton(
+                    onPressed: () {
+                      Get.offAll(SalahBottomBar());
                     },
                     child: Text(
-                      "Select Location",
+                      'Next',
                       style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w400, color: Colors.black),
-                    ))
-              ],
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    )),
+              ),
             ),
-            CustomRoundedBtn(
-                icon: Icons.arrow_forward_ios_rounded,
-                onTap: () {
-                  constant.box.write(
-                    'city',
-                    cityValue,
-                  );
-                  constant.box.write(
-                    'country',
-                    countryValue.substring(8),
-                  );
-                  Get.offAll(SalahBottomBar());
-                })
+            // CustomRoundedBtn(
+            //     icon: Icons.arrow_forward_ios_rounded,
+            //     onTap: () {
+            //       constant.box.write(
+            //         'city',
+            //         cityValue,
+            //       );
+            //       constant.box.write(
+            //         'country',
+            //         countryValue.substring(8),
+            //       );
+            //       Get.offAll(SalahBottomBar());
+            //     })
           ],
         ),
       ),

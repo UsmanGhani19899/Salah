@@ -23,9 +23,16 @@ class _SalahSplashState extends State<SalahSplash> {
   @override
   void initState() {
     Timer(Duration(seconds: 3), () {
-      constant.box.read('country') != '' || constant.box.read('country') != null
-          ? Get.offAll(SalahBottomBar())
-          : Get.offAll(SelectCountry());
+      if (constant.box.read('selectedCountry') != '' ||
+          constant.box.read('selectedCountry') != null) {
+        Get.offAll(SalahBottomBar());
+      } else {
+        Get.offAll(SelectCountry());
+      }
+      // constant.box.read('selectedCountry') != '' ||
+      //         constant.box.read('selectedCountry') != null
+      //     ? Get.offAll(SalahBottomBar())
+      //     : Get.offAll(SelectCountry());
     });
     // TODO: implement initState
     super.initState();

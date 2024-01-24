@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:salah/Models/asma_ul_husna_model.dart';
+import 'package:salah/Models/city_model.dart';
+import 'package:salah/Models/countries_model.dart';
+import 'package:salah/Models/direction_model.dart';
 import 'package:salah/Models/islamic_calender_model.dart';
 import 'package:salah/Models/prayer_Time_model.dart';
 import 'package:salah/Models/quran_detail_model.dart';
@@ -40,4 +43,16 @@ abstract class GetApi {
 
   @GET('https://api.alquran.cloud/v1/quran/ar.alafasy')
   Future<QuranDetailTextModel> getDetailSSurah();
+
+  @GET(
+      'https://maps.googleapis.com/maps/api/directions/json?destination=-33.923740%2C150.920166&mode=walking&origin={latitude}%2C{longitude}&key=AIzaSyALAfKe5ueBePbjdDKSgmxeEAaqouHemq4')
+  Future<GooleMapDirectionModel> getDirection(
+      @Path('latitude') double latitude, @Path('longitude') double longitude);
+
+  @GET('https://countriesnow.space/api/v0.1/countries/flag/images')
+  Future<CountriesModel> getCountries();
+
+  @GET(
+      'http://api.geonames.org/searchJSON?country={country}&featureClass=P&maxRows=10&username=usmanghani19899')
+  Future<CityModel> getCity(@Path('country') String country);
 }

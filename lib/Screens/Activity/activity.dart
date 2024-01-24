@@ -21,36 +21,46 @@ class _ActivityScreenState extends State<ActivityScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        CustomCard(
-          cardName: "Tasbeeh",
-          iconData: FeatherIcons.clock,
-          onTap: () {
-            Get.to(TasbeehScreen());
-          },
+        appBar: AppBar(
+          toolbarHeight: 80,
+          // backgroundColor: Colors.black26,
         ),
-        CustomCard(
-          cardName: "Asma-Ul-Husna",
-          iconData: FeatherIcons.activity,
-          onTap: () {
-            Get.to(AsmaUlHusnaScreen());
-          },
-        ),
-        CustomCard(
-          onTap: () {
-            Get.to(QuranReciterScreen());
-          },
-          cardName: "Recitation",
-          iconData: FeatherIcons.book,
-        ),
-        CustomCard(
-          cardName: "Tasbeeh",
-          iconData: FeatherIcons.clock,
-          onTap: () {},
-        )
-      ],
-    ));
+        // backgroundColor: Colors.grey.shade900,
+        body: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomCard(
+                  cardName: "Tasbeeh",
+                  iconData: FeatherIcons.clock,
+                  onTap: () {
+                    Get.to(TasbeehScreen());
+                  },
+                ),
+                CustomCard(
+                  cardName: "Asma-Ul-Husna",
+                  iconData: FeatherIcons.activity,
+                  onTap: () {
+                    Get.to(AsmaUlHusnaScreen());
+                  },
+                ),
+                CustomCard(
+                  onTap: () {
+                    Get.to(QuranReciterScreen());
+                  },
+                  cardName: "Recitation",
+                  iconData: FeatherIcons.book,
+                ),
+                CustomCard(
+                  cardName: "Tasbeeh",
+                  iconData: FeatherIcons.clock,
+                  onTap: () {},
+                )
+              ],
+            ),
+          ),
+        ));
   }
 }

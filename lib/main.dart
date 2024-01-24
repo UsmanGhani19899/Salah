@@ -6,6 +6,7 @@ import 'package:salah/Screens/detailed_surah.dart';
 import 'package:salah/Screens/home.dart';
 import 'package:salah/Screens/map.dart';
 import 'package:salah/Screens/salah_splash.dart';
+import 'package:salah/Screens/select_country.dart';
 import 'package:salah/Widget/salah_bottomBar.dart';
 import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
@@ -32,7 +33,18 @@ class _SalahState extends State<Salah> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      theme: ThemeData(scaffoldBackgroundColor: Color(0xff172222)),
+      theme: ThemeData(
+          scaffoldBackgroundColor: Color(0xff141414),
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.grey.shade800.withOpacity(0.5),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  backgroundColor: Color(0xff35c55e)))
+          // scaffoldBackgroundColor: Color(0xff172222),
+          ),
       debugShowCheckedModeBanner: false,
       home: SalahSplash(),
     );

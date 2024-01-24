@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -5,6 +6,7 @@ import 'package:csc_picker/csc_picker.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as map;
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -12,6 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:salah/Core/get_api.dart';
 import 'package:salah/Core/get_constants.dart';
+import 'package:salah/Models/direction_model.dart';
 import 'package:salah/Models/nearby_places_model.dart';
 import 'package:salah/Screens/map.dart';
 
@@ -30,11 +33,14 @@ String countryValue = "";
 String stateValue = "";
 String cityValue = "";
 NearbyPlaces? nearbyPlaces;
+GooleMapDirectionModel? googleMapDirectionModel;
 
 class _HomeScreenState extends State<HomeScreen> {
   String address = 'Loading...';
   double? lng;
   double? lat;
+  double? mosqueLat;
+  double? mosqueLong;
   String? _currentAddress;
   Position? _currentPosition;
   Constant constant = Constant();
@@ -141,23 +147,65 @@ class _HomeScreenState extends State<HomeScreen> {
   //   );
   // }
 
+  getIcons() async {}
+
+  List<map.Marker>? markers;
+  Future<void> getMarkers() async {
+    // map.BitmapDescriptor? icon;
+    map.BitmapDescriptor icon = await map.BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(
+        devicePixelRatio: 1.1,
+        size: Size(10, 30),
+      ),
+      "assets/images/marker.png",
+    );
+    // setState(() {
+    //   this.icon = icon;
+    // });
+    setState(() {});
+    markers = List.generate(
+      nearbyPlaces!.results!.length,
+      (index) => map.Marker(
+        icon: icon,
+        markerId: map.MarkerId('${nearbyPlaces?.results?[index].name}'),
+        position: map.LatLng(
+            nearbyPlaces?.results?[index].geometry?.location?.lat ?? 0,
+            nearbyPlaces?.results?[index].geometry?.location?.lng ?? 0),
+        infoWindow: map.InfoWindow(
+          title: '${nearbyPlaces?.results?[index].name}',
+        ),
+      ),
+    );
+  }
+
+// Direction API
+  Future<void> getDirection() async {
+    googleMapDirectionModel = await getApi.getDirection(
+        _currentPosition?.latitude ?? 0, _currentPosition?.longitude ?? 0);
+    print('hehehe');
+  }
+
   Future<void> apis() async {
     // await getAddressFromLatLng(
     //     _currentPosition?.latitude ?? 0, _currentPosition?.longitude ?? 0);
     await _getCurrentPosition();
 
     await getPlaces();
+    await getMarkers();
+    await getDirection();
     // await getAddress(lng.toString(), lat.toString());
-
-    print(address);
-    setState(() {});
+    markers;
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        _getCurrentPosition();
+      });
+    });
     apis();
   }
 
@@ -178,7 +226,6 @@ class _HomeScreenState extends State<HomeScreen> {
       //   color: Colors.white,
       // )),
       appBar: AppBar(
-        backgroundColor: Color(0xff172222),
         toolbarHeight: 80,
         // centerTitle: true,
         elevation: 0,
@@ -199,7 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text(
                 'Current Location',
                 style: GoogleFonts.roboto(
-                    color: Colors.blue, fontWeight: FontWeight.bold),
+                    color: Color(0xff35c55e), fontWeight: FontWeight.bold),
               ),
             ),
           )
@@ -209,10 +256,13 @@ class _HomeScreenState extends State<HomeScreen> {
         alignment: Alignment.bottomCenter,
         children: [
           SalahMap(
+              marker: markers,
+              mosqueLong: mosqueLong ?? 0,
+              mosqueLat: mosqueLat ?? 0,
               lat: _currentPosition?.latitude ?? 0,
               lnng: _currentPosition?.longitude ?? 0),
           Padding(
-            padding: const EdgeInsets.only(bottom: 90),
+            padding: const EdgeInsets.only(bottom: 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,6 +285,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: Get.height * 0.18,
                           ),
                           items: nearbyPlaces?.results?.map((i) {
+                            mosqueLat = i.geometry?.location?.lat;
+                            mosqueLong = i.geometry?.location?.lng;
                             return Builder(
                               builder: (
                                 BuildContext context,
