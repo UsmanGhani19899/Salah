@@ -11,6 +11,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:salah/Core/get_api.dart';
 import 'package:salah/Core/get_constants.dart';
@@ -166,7 +167,6 @@ class _HomeScreenState extends State<HomeScreen> {
     markers = List.generate(
       nearbyPlaces!.results!.length,
       (index) => map.Marker(
-        icon: icon,
         markerId: map.MarkerId('${nearbyPlaces?.results?[index].name}'),
         position: map.LatLng(
             nearbyPlaces?.results?[index].geometry?.location?.lat ?? 0,
@@ -178,10 +178,34 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Set<map.Polyline> _polylines = Set<map.Polyline>();
+  Future<void> _addPolyline() async {
+    map.Polyline polyline = map.Polyline(
+      polylineId: map.PolylineId('polyline_id'),
+      color: Colors.blue,
+      points: List.generate(10, (index) {
+        print('${googleMapDirectionModel!.routes!.length} lenghting');
+        return LatLng(
+            googleMapDirectionModel!
+                .routes![index].legs![index].steps![index].endLocation!.lat!,
+            googleMapDirectionModel!
+                .routes![index].legs![index].steps![index].endLocation!.lng!);
+      }),
+      width: 3,
+    );
+
+    setState(() {
+      _polylines.add(polyline);
+    });
+  }
+
 // Direction API
-  Future<void> getDirection() async {
+  Future<void> getDirection(double desLat, double desLong) async {
     googleMapDirectionModel = await getApi.getDirection(
-        _currentPosition?.latitude ?? 0, _currentPosition?.longitude ?? 0);
+        _currentPosition?.latitude ?? 0,
+        _currentPosition?.longitude ?? 0,
+        desLat,
+        desLong);
     print('hehehe');
   }
 
@@ -192,7 +216,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     await getPlaces();
     await getMarkers();
-    await getDirection();
+    // await getDirection(-33.8690048, 151.175168);
+    // await _addPolyline();
     // await getAddress(lng.toString(), lat.toString());
     markers;
   }
@@ -201,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    Timer.periodic(Duration(milliseconds: 100), (timer) {
       setState(() {
         _getCurrentPosition();
       });
@@ -256,6 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
         alignment: Alignment.bottomCenter,
         children: [
           SalahMap(
+              polylines: _polylines,
               marker: markers,
               mosqueLong: mosqueLong ?? 0,
               mosqueLat: mosqueLat ?? 0,
@@ -274,228 +300,191 @@ class _HomeScreenState extends State<HomeScreen> {
                 //       fontSize: 20,
                 //       fontWeight: FontWeight.w400),
                 // ),
-                nearbyPlaces!.results!.isNotEmpty
-                    ? Container(
-                        margin: EdgeInsets.symmetric(vertical: 15),
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: 15),
+                    height: Get.height * 0.18,
+                    child: CarouselSlider(
+                      options: CarouselOptions(
+                        viewportFraction: 0.9,
+                        // aspectRatio: 1 / 3,
                         height: Get.height * 0.18,
-                        child: CarouselSlider(
-                          options: CarouselOptions(
-                            viewportFraction: 0.9,
-                            // aspectRatio: 1 / 3,
-                            height: Get.height * 0.18,
-                          ),
-                          items: nearbyPlaces?.results?.map((i) {
-                            mosqueLat = i.geometry?.location?.lat;
-                            mosqueLong = i.geometry?.location?.lng;
-                            return Builder(
-                              builder: (
-                                BuildContext context,
-                              ) {
-                                if (nearbyPlaces!.results!.isNotEmpty) {
-                                  return Container(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 10),
-                                      // alignment: Alignment.center,
-                                      width: MediaQuery.of(context).size.width,
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 5.0),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          color: Colors.black.withOpacity(0.8)),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                width: Get.width * 0.6,
-                                                child: Text(
-                                                  '${i.name ?? ""}'
-                                                      .toUpperCase(),
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 16.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
+                      ),
+                      items: nearbyPlaces?.results?.map((i) {
+                        mosqueLat = i.geometry?.location?.lat;
+                        mosqueLong = i.geometry?.location?.lng;
+                        if (nearbyPlaces?.results?.isNotEmpty ?? false) {
+                          return Builder(
+                            builder: (
+                              BuildContext context,
+                            ) {
+                              if (nearbyPlaces?.results?.isNotEmpty ?? false) {
+                                return Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    // alignment: Alignment.center,
+                                    width: MediaQuery.of(context).size.width,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 5.0),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colors.black.withOpacity(0.8)),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: Get.width * 0.6,
+                                              child: Text(
+                                                '${i.name ?? ""}'.toUpperCase(),
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 16.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white),
                                               ),
-                                              Container(
-                                                width: Get.width * 0.65,
-                                                child: Text(
-                                                  '${i.vicinity ?? ""}',
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 16.0,
-                                                      color: Colors.grey),
-                                                ),
+                                            ),
+                                            Container(
+                                              width: Get.width * 0.65,
+                                              child: Text(
+                                                '${i.vicinity ?? ""}',
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 16.0,
+                                                    color: Colors.grey),
                                               ),
-                                              RatingBar.builder(
-                                                initialRating:
-                                                    i.rating?.toDouble() ?? 0,
-                                                itemSize: 16,
-                                                direction: Axis.horizontal,
-                                                allowHalfRating: true,
-                                                ignoreGestures: true,
-                                                itemCount: 5,
-                                                itemPadding:
-                                                    EdgeInsets.symmetric(
-                                                        horizontal: 4.0),
-                                                itemBuilder: (context, _) =>
-                                                    Icon(
-                                                  Icons.star,
-                                                  color: Colors.amber,
-                                                ),
-                                                onRatingUpdate: (rating) {
-                                                  print(rating);
-                                                },
-                                              )
-                                            ],
-                                          ),
-                                          IconButton(
-                                              onPressed: () {
-                                                MapLauncher.showDirections(
-                                                    mapType: MapType.google,
-                                                    origin: Coords(
-                                                        _currentPosition
-                                                                ?.latitude ??
-                                                            0,
-                                                        _currentPosition
-                                                                ?.longitude ??
-                                                            0),
-                                                    originTitle:
-                                                        'Your Locations',
-                                                    destinationTitle:
-                                                        'Destination Location',
-                                                    destination: Coords(
-                                                        i.geometry?.location
-                                                                ?.lat ??
-                                                            0,
-                                                        i.geometry?.location
-                                                                ?.lng ??
-                                                            0));
+                                            ),
+                                            RatingBar.builder(
+                                              initialRating:
+                                                  i.rating?.toDouble() ?? 0,
+                                              itemSize: 16,
+                                              direction: Axis.horizontal,
+                                              allowHalfRating: true,
+                                              ignoreGestures: true,
+                                              itemCount: 5,
+                                              itemPadding: EdgeInsets.symmetric(
+                                                  horizontal: 4.0),
+                                              itemBuilder: (context, _) => Icon(
+                                                Icons.star,
+                                                color: Colors.amber,
+                                              ),
+                                              onRatingUpdate: (rating) {
+                                                print(rating);
                                               },
-                                              icon: Icon(
-                                                Icons.directions_outlined,
-                                                size: 40,
-                                                color: Colors.blue,
-                                              ))
-                                        ],
-                                      ));
-                                } else {
-                                  return Center(
-                                      child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          // alignment: Alignment.center,
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 5.0),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              color: Colors.white),
-                                          child: Center(
-                                              child: CircularProgressIndicator(
-                                            color: Colors.blue,
-                                          ))));
-                                }
-                              },
-                            );
-                          }).toList(),
-                        )
+                                            )
+                                          ],
+                                        ),
+                                        IconButton(
+                                            onPressed: () async {
+                                              await getDirection(
+                                                  i.geometry?.location?.lat ??
+                                                      0,
+                                                  i.geometry?.location?.lng ??
+                                                      0);
 
-                        // ListView.builder(
-                        //     scrollDirection: Axis.horizontal,
-                        //     itemCount: nearbyPlaces?.results?.length,
-                        //     shrinkWrap: true,
-                        //     itemBuilder: (context, index) {
-                        //       lat = nearbyPlaces!
-                        //           .results![index].geometry!.location!.lat!;
+                                              await _addPolyline();
+                                              print(
+                                                  '${i.geometry?.location?.lat} llaatt');
+                                              print(
+                                                  '${i.geometry?.location?.lng} llnngg');
 
-                        //       lng = nearbyPlaces!
-                        //           .results![index].geometry!.location!.lng!;
+                                              setState(() {});
+                                              // MapLauncher.showDirections(
+                                              //     mapType: MapType.google,
+                                              //     origin:
+                                              //         Coords(
+                                              //             _currentPosition
+                                              //                     ?.latitude ??
+                                              //                 0,
+                                              //             _currentPosition
+                                              //                     ?.longitude ??
+                                              //                 0),
+                                              //     originTitle: 'Your Locations',
+                                              //     destinationTitle:
+                                              //         'Destination Location',
+                                              //     destination: Coords(
+                                              //         i.geometry?.location
+                                              //                 ?.lat ??
+                                              //             0,
+                                              //         i.geometry?.location
+                                              //                 ?.lng ??
+                                              //             0));
+                                            },
+                                            icon: Icon(
+                                              Icons.directions_outlined,
+                                              size: 40,
+                                              color: Colors.blue,
+                                            ))
+                                      ],
+                                    ));
+                              } else {
+                                return Center(
+                                    child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        // alignment: Alignment.center,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 5.0),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            color: Colors.white),
+                                        child: Center(
+                                            child: CircularProgressIndicator(
+                                          color: Colors.blue,
+                                        ))));
+                              }
+                            },
+                          );
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      }).toList(),
+                    )
 
-                        //       listIndex = index;
-                        //       print("${nearbyPlaces!.results?.length}zzzz");
-                        //       if (nearbyPlaces!.results!.isNotEmpty) {
-                        //         // lat = nearbyPlaces!
-                        //         //     .results![index].geometry!.location!.lat!;
+                    // ListView.builder(
+                    //     scrollDirection: Axis.horizontal,
+                    //     itemCount: nearbyPlaces?.results?.length,
+                    //     shrinkWrap: true,
+                    //     itemBuilder: (context, index) {
+                    //       lat = nearbyPlaces!
+                    //           .results![index].geometry!.location!.lat!;
 
-                        //         // lng = nearbyPlaces!
-                        //         //     .results![index].geometry!.location!.lng!;
+                    //       lng = nearbyPlaces!
+                    //           .results![index].geometry!.location!.lng!;
 
-                        //         return Container(
-                        //           margin: EdgeInsets.symmetric(vertical: 8),
-                        //           height: Get.height * 0.15,
-                        //           width: Get.width,
-                        //           color: Colors.grey.shade100,
-                        //           child: Column(
-                        //             children: [
-                        //               Text('${nearbyPlaces?.results?[index].name}'),
-                        //               Text('$address'),
-                        //             ],
-                        //           ),
-                        //         );
-                        //       } else {
-                        //         return Text("data");
-                        //       }
-                        //     }),
+                    //       listIndex = index;
+                    //       print("${nearbyPlaces!.results?.length}zzzz");
+                    //       if (nearbyPlaces!.results!.isNotEmpty) {
+                    //         // lat = nearbyPlaces!
+                    //         //     .results![index].geometry!.location!.lat!;
 
-                        )
-                    : Container(
-                        alignment: Alignment.center,
-                        height: Get.height * 0.18,
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        // alignment: Alignment.center,
-                        width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 15),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.black),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              FeatherIcons.info,
-                              color: Colors.red,
-                              size: 40,
-                            ),
-                            SizedBox(
-                              height: 12,
-                            ),
-                            Text(
-                              'No Mosque in your area'.toUpperCase(),
-                              style: GoogleFonts.roboto(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18),
-                            ),
-                            SizedBox(
-                              height: 12,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                getPlaces();
-                                setState(() {});
-                              },
-                              child: Text(
-                                'Retry',
-                                style: GoogleFonts.roboto(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 18),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
+                    //         // lng = nearbyPlaces!
+                    //         //     .results![index].geometry!.location!.lng!;
+
+                    //         return Container(
+                    //           margin: EdgeInsets.symmetric(vertical: 8),
+                    //           height: Get.height * 0.15,
+                    //           width: Get.width,
+                    //           color: Colors.grey.shade100,
+                    //           child: Column(
+                    //             children: [
+                    //               Text('${nearbyPlaces?.results?[index].name}'),
+                    //               Text('$address'),
+                    //             ],
+                    //           ),
+                    //         );
+                    //       } else {
+                    //         return Text("data");
+                    //       }
+                    //     }),
+
+                    )
               ],
             ),
           ),

@@ -14,7 +14,7 @@ class CustomNamazCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
 
-      height: Get.height * 0.1,
+      height: Get.height * 0.08,
       width: Get.width,
       decoration: BoxDecoration(
           // border: Border.all(color: Colors.grey.shade600, width: 0.4),

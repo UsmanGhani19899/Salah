@@ -53,8 +53,10 @@ class _CitySelectScreenState extends State<CitySelectScreen> {
                 setState(() {
                   selectedIndex = index;
                 });
+
                 cons.box
                     .write('selectedCity', cityModel?.geonames?[index].name);
+                Navigator.pop(context);
               },
               child: Container(
                 decoration: BoxDecoration(

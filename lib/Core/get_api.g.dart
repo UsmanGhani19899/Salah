@@ -218,6 +218,8 @@ class _GetApi implements GetApi {
   Future<GooleMapDirectionModel> getDirection(
     double latitude,
     double longitude,
+    double deslatitude,
+    double deslongitude,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -231,7 +233,7 @@ class _GetApi implements GetApi {
     )
             .compose(
               _dio.options,
-              'https://maps.googleapis.com/maps/api/directions/json?destination=-33.923740%2C150.920166&mode=walking&origin=${latitude}%2C${longitude}&key=AIzaSyALAfKe5ueBePbjdDKSgmxeEAaqouHemq4',
+              'https://maps.googleapis.com/maps/api/directions/json?destination=${deslatitude}%2C${deslongitude}&mode=walking&origin=${latitude}%2C${longitude}&key=AIzaSyALAfKe5ueBePbjdDKSgmxeEAaqouHemq4',
               queryParameters: queryParameters,
               data: _data,
             )

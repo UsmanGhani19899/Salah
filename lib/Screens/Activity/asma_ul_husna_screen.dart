@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:salah/Core/get_api.dart';
 import 'package:salah/Models/asma_ul_husna_model.dart';
+import 'package:salah/Widget/custom_shimmer.dart';
 
 import '../../Core/dio.dart';
 
@@ -39,87 +40,102 @@ class _AsmaUlHusnaScreenState extends State<AsmaUlHusnaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          'Al-Asma-ul-Husna',
-          style: GoogleFonts.roboto(fontWeight: FontWeight.bold),
+        appBar: AppBar(
+          toolbarHeight: 80,
+          // backgroundColor: Colors.transparent,
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Text(
+            'Al-Asma-ul-Husna',
+            style: GoogleFonts.roboto(
+                fontWeight: FontWeight.bold, color: Colors.white),
+          ),
         ),
-      ),
-      body: ListView.builder(
-          // gridDelegate:
-          //     SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-          itemCount: asmaUlHusnaModel?.data.length,
-          itemBuilder: (context, index) {
-            if (asmaUlHusnaModel!.data.isNotEmpty &&
-                asmaUlHusnaModel?.data.length != null) {
-              return Container(
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                margin: EdgeInsets.all(8),
-                // height: 90,
-                child: ExpansionTile(
-                  tilePadding:
-                      EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                  collapsedShape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  leading: Text(
-                    '${asmaUlHusnaModel?.data[index].number}',
-                    style: GoogleFonts.roboto(fontWeight: FontWeight.bold),
-                  ),
-                  expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                  expandedAlignment: Alignment.topLeft,
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide.none,
-                      borderRadius: BorderRadius.circular(20)),
-                  collapsedBackgroundColor: Colors.grey.shade200,
-                  backgroundColor: Colors.grey.shade200,
-                  childrenPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Translation: ',
-                          style: GoogleFonts.roboto(
-                              fontWeight: FontWeight.w400, color: Colors.grey),
+        body: asmaUlHusnaModel?.data != null
+            ? ListView.builder(
+                // gridDelegate:
+                //     SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                itemCount: asmaUlHusnaModel?.data.length,
+                itemBuilder: (context, index) {
+                  if (asmaUlHusnaModel!.data.isNotEmpty &&
+                      asmaUlHusnaModel?.data.length != null) {
+                    return Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20)),
+                      margin: EdgeInsets.all(8),
+                      // height: 90,
+                      child: ExpansionTile(
+                        tilePadding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                        collapsedShape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        leading: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Text(
+                              '${index + 1}',
+                              style: GoogleFonts.roboto(color: Colors.white),
+                            ),
+                            Image(
+                              image: AssetImage('assets/images/shape.png'),
+                              color: Colors.purple,
+                            )
+                          ],
                         ),
-                        Text(
-                          '${asmaUlHusnaModel?.data[index].transliteration}',
-                          style:
-                              GoogleFonts.roboto(fontWeight: FontWeight.bold),
+                        expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                        expandedAlignment: Alignment.topLeft,
+                        childrenPadding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                        shape: RoundedRectangleBorder(
+                            side: BorderSide.none,
+                            borderRadius: BorderRadius.circular(20)),
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'Translation: ',
+                                style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.grey),
+                              ),
+                              Text(
+                                '${asmaUlHusnaModel?.data[index].transliteration}',
+                                style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                'Meaning: ',
+                                style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.grey),
+                              ),
+                              Text(
+                                '${asmaUlHusnaModel?.data[index].en.meaning}',
+                                style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ],
+                        title: Text(
+                          '${asmaUlHusnaModel?.data[index].name}',
+                          style: GoogleFonts.notoSansArabic(
+                              fontWeight: FontWeight.w400, color: Colors.white),
                         ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          'Meaning: ',
-                          style: GoogleFonts.roboto(
-                              fontWeight: FontWeight.w400, color: Colors.grey),
-                        ),
-                        Text(
-                          '${asmaUlHusnaModel?.data[index].en.meaning}',
-                          style:
-                              GoogleFonts.roboto(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ],
-                  title: Text(
-                    '${asmaUlHusnaModel?.data[index].name}',
-                    style:
-                        GoogleFonts.notoSansArabic(fontWeight: FontWeight.bold),
-                  ),
-                ),
-              );
-            } else {
-              return CircularProgressIndicator(
-                color: Colors.black,
-              );
-            }
-          }),
-    );
+                      ),
+                    );
+                  } else {
+                    return CircularProgressIndicator(
+                      color: Colors.black,
+                    );
+                  }
+                })
+            : CustomShimmer());
   }
 }

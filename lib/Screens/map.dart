@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salah/Core/get_constants.dart';
 
 class SalahMap extends StatefulWidget {
+  final polylines;
   final List<Marker>? marker;
   final double mosqueLat;
   final double mosqueLong;
@@ -13,6 +14,7 @@ class SalahMap extends StatefulWidget {
   final double lnng;
   const SalahMap(
       {super.key,
+      required this.polylines,
       required this.marker,
       required this.mosqueLat,
       required this.mosqueLong,
@@ -48,7 +50,9 @@ Marker demo = new Marker(
 );
 
 class Salah_MapState extends State<SalahMap> {
+  Completer<GoogleMapController> _controller = Completer();
   void _onMapCreated(GoogleMapController controller) {
+    _controller.complete(controller);
     _mapController = controller;
     _mapController = controller;
     _mapController.setMapStyle(_mapStyle);
@@ -104,7 +108,7 @@ class Salah_MapState extends State<SalahMap> {
               )
             : GoogleMap(
                 buildingsEnabled: false,
-
+                polylines: widget.polylines,
                 myLocationEnabled: true,
                 compassEnabled: false,
                 markers: Set<Marker>.of(widget.marker ?? []),

@@ -8,10 +8,13 @@ import 'package:salah/Core/get_api.dart';
 import 'package:salah/Models/quran_detail_model.dart';
 import 'package:salah/Models/quran_reciters_model.dart';
 import 'package:salah/Models/surah_model.dart';
+import 'package:salah/Screens/Activity/Recitation/listen_quran.dart';
 import 'package:salah/Screens/Activity/audio_player.dart';
 import 'package:salah/Screens/Activity/reciter_profile.dart';
 import 'package:salah/Screens/detailed_surah.dart';
 import 'package:salah/Widget/custom_roundedBtn.dart';
+import 'package:salah/Widget/custom_shimmer.dart';
+import 'package:shimmer/shimmer.dart';
 
 class QuranReciterScreen extends StatefulWidget {
   const QuranReciterScreen({super.key});
@@ -83,19 +86,20 @@ class _QuranReciterScreenState extends State<QuranReciterScreen> {
                   //     "Medinan") {
                   //   surahType = "المَدَني";
                   // }
-                  int page = quranDetailTextModel
-                          ?.data.surahs[index].ayahs[index].text.length ??
-                      0;
-                  int ruku =
-                      quranDetailTextModel?.data.surahs[index].ayahs.length ??
-                          0;
+                  // int page = quranDetailTextModel
+                  //         ?.data.surahs[index].ayahs[index].text.length ??
+                  //     0;
+                  // int ruku =
+                  //     quranDetailTextModel?.data.surahs[index].ayahs.length ??
+                  //         0;
 
-                  int totalRuku = page * ruku;
+                  // int totalRuku = page * ruku;
                   return GestureDetector(
                     child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
                       // height: Get.height * 0.07,
                       child: ExpansionTile(
-                        expandedCrossAxisAlignment: CrossAxisAlignment.end,
+                        expandedCrossAxisAlignment: CrossAxisAlignment.start,
                         expandedAlignment: Alignment.topLeft,
                         childrenPadding:
                             EdgeInsets.symmetric(vertical: 10, horizontal: 25),
@@ -121,31 +125,41 @@ class _QuranReciterScreenState extends State<QuranReciterScreen> {
                         ),
                         trailing: GestureDetector(
                           onTap: () {
-                            mergedList.clear();
-                            fullSurah = "";
-                            for (int i = 0;
-                                i <
-                                    quranDetailTextModel!
-                                        .data.surahs[index].ayahs.length;
-                                i++) {
-                              mergedList.add(
-                                '${quranDetailTextModel!.data.surahs[index].ayahs[i].text.replaceAll('بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ', "")}',
-                              );
-                            }
-                            fullSurah = '${mergedList}';
-                            fullSurah = fullSurah
-                                .substring(1, fullSurah.length - 1)
-                                .replaceFirst(',', '')
-                                .replaceAll(',', ' O ');
-
-                            Get.to(() => DetailedSurah(
-                                  surahName: quranDetailTextModel!
-                                      .data.surahs[index].name,
-                                  bismillah: quranDetailTextModel!
-                                      .data.surahs.first.ayahs.first.text,
-                                  fullSurah: fullSurah,
+                            Get.to(() => ListenQuranScreen(
+                                  surahName: quranDetailTextModel
+                                          ?.data.surahs[index].name ??
+                                      "",
+                                  quranDetailTextModel: quranDetailTextModel
+                                          ?.data.surahs[index].ayahs ??
+                                      [],
                                 ));
                           },
+                          // onTap: () {
+                          //   mergedList.clear();
+                          //   fullSurah = "";
+                          //   for (int i = 0;
+                          //       i <
+                          //           quranDetailTextModel!
+                          //               .data.surahs[index].ayahs.length;
+                          //       i++) {
+                          //     mergedList.add(
+                          //       '${quranDetailTextModel!.data.surahs[index].ayahs[i].text.replaceAll('بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ', "")}',
+                          //     );
+                          //   }
+                          //   fullSurah = '${mergedList}';
+                          //   fullSurah = fullSurah
+                          //       .substring(1, fullSurah.length - 1)
+                          //       .replaceFirst(',', '')
+                          //       .replaceAll(',', ' O ');
+
+                          //   Get.to(() => DetailedSurah(
+                          //         surahName: quranDetailTextModel!
+                          //             .data.surahs[index].name,
+                          //         bismillah: quranDetailTextModel!
+                          //             .data.surahs.first.ayahs.first.text,
+                          //         fullSurah: fullSurah,
+                          //       ));
+                          // },
                           child: Icon(
                             Icons.arrow_forward,
                             color: Colors.white,
@@ -182,31 +196,46 @@ class _QuranReciterScreenState extends State<QuranReciterScreen> {
                         //   ),
                         // ),
                         children: [
-                          Text(
-                            'Ayah: ${quranDetailTextModel?.data.surahs[index].ayahs.length}',
-                            style: GoogleFonts.roboto(color: Colors.grey),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Surah No: ${quranDetailTextModel?.data.surahs[index].ayahs.length}',
-                            style: GoogleFonts.roboto(color: Colors.grey),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Ruku: ${totalRuku}',
-                            style: GoogleFonts.roboto(color: Colors.grey),
-                          ),
+                          // Text(
+                          //   'Surah No: ${quranDetailTextModel?.data.surahs[index].number}   Ayah: ${quranDetailTextModel?.data.surahs[index].ayahs.length}',
+                          //   style: GoogleFonts.roboto(color: Colors.grey),
+                          // ),
+                          buildBulletPoint(
+                              'Surah No: ${quranDetailTextModel?.data.surahs[index].number}'),
+                          buildBulletPoint(
+                              'Ayah: ${quranDetailTextModel?.data.surahs[index].ayahs.length}'),
+                          // SizedBox(
+                          //   height: 10,
+                          // ),
+                          // Text(
+                          //   'Ruku: ${quranDetailTextModel?.data.surahs[index].ayahs.last.ruku}',
+                          //   style: GoogleFonts.roboto(color: Colors.grey),
+                          // ),
                         ],
                       ),
                     ),
                   );
                 })
-            : CircularProgressIndicator(
-                color: Colors.white,
-              ));
+            : CustomShimmer());
+  }
+
+  Widget buildBulletPoint(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('•',
+              style: TextStyle(
+                  fontSize: 16, color: Colors.white)), // Bullet point character
+          SizedBox(width: 8), // Space between bullet point and text
+          Expanded(
+              child: Text(
+            text,
+            style: GoogleFonts.roboto(color: Colors.grey),
+          )),
+        ],
+      ),
+    );
   }
 }

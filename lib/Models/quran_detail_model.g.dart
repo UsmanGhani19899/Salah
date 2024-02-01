@@ -74,8 +74,8 @@ Map<String, dynamic> _$SurahToJson(Surah instance) => <String, dynamic>{
     };
 
 const _$RevelationTypeEnumMap = {
-  RevelationType.MECCAN: 'MECCAN',
-  RevelationType.MEDINAN: 'MEDINAN',
+  RevelationType.Meccan: 'Meccan',
+  RevelationType.Medinan: 'Medinan',
 };
 
 Ayah _$AyahFromJson(Map<String, dynamic> json) => Ayah(

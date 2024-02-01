@@ -141,4 +141,4 @@ class SajdaClass {
   }
 }
 
-enum RevelationType { MECCAN, MEDINAN }
+enum RevelationType { Meccan, Medinan }

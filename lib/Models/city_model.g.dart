@@ -7,9 +7,9 @@ part of 'city_model.dart';
 // **************************************************************************
 
 CityModel _$CityModelFromJson(Map<String, dynamic> json) => CityModel(
-      totalResultsCount: json['totalResultsCount'] as int,
-      geonames: (json['geonames'] as List<dynamic>)
-          .map((e) => Geoname.fromJson(e as Map<String, dynamic>))
+      totalResultsCount: json['totalResultsCount'] as int?,
+      geonames: (json['geonames'] as List<dynamic>?)
+          ?.map((e) => Geoname.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -19,17 +19,18 @@ Map<String, dynamic> _$CityModelToJson(CityModel instance) => <String, dynamic>{
     };
 
 Geoname _$GeonameFromJson(Map<String, dynamic> json) => Geoname(
-      adminCode1: json['adminCode1'] ?? "",
-      lng: json['lng'] ?? "",
-      geonameId: json['geonameId'] as int,
-      toponymName: json['toponymName'] ?? "",
-      countryId: json['countryId'] ?? "",
+      adminCode1: json['adminCode1'] as String?,
+      lng: json['lng'] as String?,
+      geonameId: json['geonameId'] as int?,
+      toponymName: json['toponymName'] as String?,
+      countryId: json['countryId'] as String?,
       population: json['population'] as int,
-      name: json['name'] ?? "",
-      adminCodes1:
-          AdminCodes1.fromJson(json['adminCodes1'] as Map<String, dynamic>),
-      adminName1: json['adminName1'] ?? "",
-      lat: json['lat'] ?? "",
+      name: json['name'] as String?,
+      adminCodes1: json['adminCodes1'] == null
+          ? null
+          : AdminCodes1.fromJson(json['adminCodes1'] as Map<String, dynamic>),
+      adminName1: json['adminName1'] as String?,
+      lat: json['lat'] as String?,
     );
 
 Map<String, dynamic> _$GeonameToJson(Geoname instance) => <String, dynamic>{
@@ -46,7 +47,7 @@ Map<String, dynamic> _$GeonameToJson(Geoname instance) => <String, dynamic>{
     };
 
 AdminCodes1 _$AdminCodes1FromJson(Map<String, dynamic> json) => AdminCodes1(
-      iso31662: json['iso31662'] ?? "",
+      iso31662: json['iso31662'] as String?,
     );
 
 Map<String, dynamic> _$AdminCodes1ToJson(AdminCodes1 instance) =>

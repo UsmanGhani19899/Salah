@@ -13,47 +13,45 @@ class CustomCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        alignment: Alignment.center,
         padding: EdgeInsets.symmetric(
           horizontal: 15,
         ),
         decoration: BoxDecoration(
-            color: Colors.grey.shade800.withOpacity(0.9),
+            color: Colors.grey.shade800.withOpacity(0.5),
             borderRadius: BorderRadius.circular(20)),
         margin: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-        width: Get.width,
+        width: Get.width * 0.4,
         height: Get.height * 0.2,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 15, bottom: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                '$cardName',
-                style: GoogleFonts.roboto(
-                    color: Colors.white,
-                    fontSize: 40,
-                    fontWeight: FontWeight.w400),
-              ),
-              // SizedBox(
-              //   height: 10,
-              // ),
-              Container(
-                width: Get.width,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  // style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-                  // backgroundColor: Colors.blue,
-                  // radius: 30,
-                  child: Text(
-                    'Open',
-                    style: GoogleFonts.roboto(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "${cardName}",
+              style: GoogleFonts.roboto(
+                  fontSize: 25,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w700),
+            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
+            Container(
+              width: Get.width,
+              child: ElevatedButton(
+                onPressed: () {},
+                // style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                // backgroundColor: Colors.blue,
+                // radius: 30,
+                child: Text(
+                  'Open',
+                  style: GoogleFonts.roboto(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

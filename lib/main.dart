@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:salah/Screens/Activity/audio_player.dart';
-import 'package:salah/Screens/detailed_surah.dart';
-import 'package:salah/Screens/home.dart';
-import 'package:salah/Screens/map.dart';
 import 'package:salah/Screens/salah_splash.dart';
-import 'package:salah/Screens/select_country.dart';
-import 'package:salah/Widget/salah_bottomBar.dart';
+import 'package:salah/Widget/noti.dart';
 import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
+import 'package:timezone/data/latest.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // NotificationService().initNotification();
+  tz.initializeTimeZones();
+
   runApp(Salah());
   final GoogleMapsFlutterPlatform mapsImplementation =
       GoogleMapsFlutterPlatform.instance;

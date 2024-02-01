@@ -45,9 +45,12 @@ abstract class GetApi {
   Future<QuranDetailTextModel> getDetailSSurah();
 
   @GET(
-      'https://maps.googleapis.com/maps/api/directions/json?destination=-33.923740%2C150.920166&mode=walking&origin={latitude}%2C{longitude}&key=AIzaSyALAfKe5ueBePbjdDKSgmxeEAaqouHemq4')
+      'https://maps.googleapis.com/maps/api/directions/json?destination={deslatitude}%2C{deslongitude}&mode=walking&origin={latitude}%2C{longitude}&key=AIzaSyALAfKe5ueBePbjdDKSgmxeEAaqouHemq4')
   Future<GooleMapDirectionModel> getDirection(
-      @Path('latitude') double latitude, @Path('longitude') double longitude);
+      @Path('latitude') double latitude,
+      @Path('longitude') double longitude,
+      @Path('deslatitude') double deslatitude,
+      @Path('deslongitude') double deslongitude);
 
   @GET('https://countriesnow.space/api/v0.1/countries/flag/images')
   Future<CountriesModel> getCountries();
