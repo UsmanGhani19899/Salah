@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:salah/Core/get_api.dart';
 import 'package:salah/Core/get_constants.dart';
+import 'package:salah/Widget/custom_shimmer.dart';
 
 import '../Core/dio.dart';
 import '../Models/city_model.dart';
@@ -45,18 +46,18 @@ class _CitySelectScreenState extends State<CitySelectScreen> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       color: Colors.grey.shade900,
-      child: ListView.builder(
+      child: cityModel?.geonames?.isNotEmpty ??  false? ListView.builder(
           itemCount: cityModel?.geonames?.length,
           itemBuilder: (context, index) {
             return GestureDetector(
-              onTap: () {
+              onTap: () async{
                 setState(() {
                   selectedIndex = index;
                 });
 
-                cons.box
+              await  cons.box
                     .write('selectedCity', cityModel?.geonames?[index].name);
-                Navigator.pop(context);
+                
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -86,7 +87,7 @@ class _CitySelectScreenState extends State<CitySelectScreen> {
                 ),
               ),
             );
-          }),
+          }): CustomShimmer()
     );
   }
 }

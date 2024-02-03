@@ -1,20 +1,20 @@
-import 'package:country_picker/country_picker.dart';
-import 'package:csc_picker/csc_picker.dart';
-import 'package:csc_picker/model/select_status_model.dart';
+
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:flutter_svg/svg.dart'; 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:salah/Core/dio.dart';
 import 'package:salah/Core/get_api.dart';
 import 'package:salah/Core/get_constants.dart';
 import 'package:salah/Models/city_model.dart';
 import 'package:salah/Models/countries_model.dart';
+import 'package:salah/Screens/Activity/tasbeeh.dart';
 import 'package:salah/Screens/city_screen.dart';
 import 'package:salah/Screens/home.dart';
 import 'package:salah/Screens/select_location.dart';
 import 'package:salah/Widget/custom_roundedBtn.dart';
+import 'package:salah/Widget/custom_shimmer.dart';
 import 'package:salah/Widget/salah_bottomBar.dart';
 
 class SelectCountry extends StatefulWidget {
@@ -42,11 +42,15 @@ class _SelectCountryState extends State<SelectCountry> {
   CityModel? cityModel;
   List<Datum>? filteredList;
   Future<void> getCountry() async {
-    countriesModel = await getApi.getCountries();
+    try {
+      countriesModel = await getApi.getCountries();
     if (countriesModel!.data.isNotEmpty) {
       filteredList = countriesModel?.data;
     }
     setState(() {});
+    } catch (e) {
+      print('${e.toString()}');
+    }
   }
 
   Future<void> getCity() async {
@@ -69,7 +73,7 @@ class _SelectCountryState extends State<SelectCountry> {
     // TODO: implement initState
     super.initState();
   }
-
+String showError= "";
   Constant cons = Constant();
   List<Datum> results = [];
   List<String> city = [];
@@ -135,14 +139,17 @@ class _SelectCountryState extends State<SelectCountry> {
                           setState(() {
                             // selectedIndex = 0;
                           });
-                        } else {
+                        }
+                        else {
                           // selectedIndex = 0;
-                          results = countriesModel!.data
+              
+    results = countriesModel!.data
                               .where((element) => element.name
                                   .toLowerCase()
                                   .contains(val.toLowerCase()))
                               .toList();
                           setState(() {});
+                      
                         }
 
                         setState(() {
@@ -177,15 +184,15 @@ class _SelectCountryState extends State<SelectCountry> {
             Expanded(
               // margin: EdgeInsets.symmetric(vertical: 10),
               // height: 400,
-              child: filteredList?.isNotEmpty ?? false
-                  ? ListView.builder(
+              child: 
+              filteredList?.isNotEmpty ?? false  
+?              ListView.builder(
                       itemCount: filteredList?.length,
                       itemBuilder: (context, index) {
-                        if (filteredList?[index].name != "") {
-                          return GestureDetector(
-                            onTap: () {
-                              cons.box.write('selectedCountry',
-                                  cityModel?.geonames?[index].name);
+                         return GestureDetector(
+                            onTap: () async{
+                             await cons.box.write('selectedCountry',
+                                  filteredList?[index].name);
                               setState(() {
                                 selectedIndex = index;
                                 showModalBottomSheet(
@@ -198,6 +205,7 @@ class _SelectCountryState extends State<SelectCountry> {
                                       );
                                     });
                               });
+                              print('${cons.box.read('selectedCountry')}klklkl');
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -228,17 +236,9 @@ class _SelectCountryState extends State<SelectCountry> {
                               ),
                             ),
                           );
-                        } else {
-                          return Center(
-                              child: CircularProgressIndicator(
-                            color: Color(0xff35c55e),
-                          ));
-                        }
+                           
                       })
-                  : Center(
-                      child: CircularProgressIndicator(
-                      color: Color(0xff35c55e),
-                    )),
+             :Center(child: CustomShimmer()) 
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
@@ -247,7 +247,8 @@ class _SelectCountryState extends State<SelectCountry> {
                 width: Get.width,
                 child: ElevatedButton(
                     onPressed: () {
-                      Get.offAll(SalahBottomBar());
+                      // print('${cons.box.read('selectedCountry')}plplpl');
+                     Get.offAll(()=>SalahBottomBar());
                     },
                     child: Text(
                       'Next',

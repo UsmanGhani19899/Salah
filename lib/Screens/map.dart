@@ -107,6 +107,8 @@ class Salah_MapState extends State<SalahMap> {
                 ),
               )
             : GoogleMap(
+              
+              zoomControlsEnabled: false,
                 buildingsEnabled: false,
                 polylines: widget.polylines,
                 myLocationEnabled: true,

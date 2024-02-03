@@ -278,7 +278,7 @@ class _PrayerTimeScreenState extends State<PrayerTimeScreen> {
     );
   }
 
-  NotificationHelper _notificationHelper = NotificationHelper();
+  // NotificationHelper _notificationHelper = NotificationHelper();
   final DateTime scehduleing = DateFormat('HH:mm').parse('11:41');
   @override
   void initState() {
@@ -307,14 +307,14 @@ class _PrayerTimeScreenState extends State<PrayerTimeScreen> {
             actions: [
               IconButton(
                   onPressed: () async {
-                    for (int i = 0; i < 3; i++) {
-                      _notificationHelper.scheduledNotification(
-                        hour: int.parse('3'),
-                        minutes: int.parse('10'),
-                        id: 1,
-                        sound: 'sound0',
-                      );
-                    }
+                    // for (int i = 0; i < 3; i++) {
+                    //   _notificationHelper.scheduledNotification(
+                    //     hour: int.parse('3'),
+                    //     minutes: int.parse('10'),
+                    //     id: 1,
+                    //     sound: 'sound0',
+                    //   );
+                    // }
                   },
                   icon: Icon(Icons.abc))
             ],

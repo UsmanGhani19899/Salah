@@ -1,8 +1,5 @@
 import 'dart:async';
 import 'dart:developer';
-
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:csc_picker/csc_picker.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -287,207 +284,136 @@ class _HomeScreenState extends State<HomeScreen> {
               mosqueLat: mosqueLat ?? 0,
               lat: _currentPosition?.latitude ?? 0,
               lnng: _currentPosition?.longitude ?? 0),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Text(
-                //   "Nearby Mosques",
-                //   style: GoogleFonts.sen(
-                //       color: Colors.grey,
-                //       fontSize: 20,
-                //       fontWeight: FontWeight.w400),
-                // ),
-                Container(
-                    margin: EdgeInsets.symmetric(vertical: 15),
-                    height: Get.height * 0.18,
-                    child: CarouselSlider(
-                      options: CarouselOptions(
-                        viewportFraction: 0.9,
-                        // aspectRatio: 1 / 3,
-                        height: Get.height * 0.18,
-                      ),
-                      items: nearbyPlaces?.results?.map((i) {
-                        mosqueLat = i.geometry?.location?.lat;
-                        mosqueLong = i.geometry?.location?.lng;
-                        if (nearbyPlaces?.results?.isNotEmpty ?? false) {
-                          return Builder(
-                            builder: (
-                              BuildContext context,
-                            ) {
-                              if (nearbyPlaces?.results?.isNotEmpty ?? false) {
-                                return Container(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    // alignment: Alignment.center,
-                                    width: MediaQuery.of(context).size.width,
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 5.0),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: Colors.black.withOpacity(0.8)),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: Get.width * 0.6,
-                                              child: Text(
-                                                '${i.name ?? ""}'.toUpperCase(),
-                                                style: GoogleFonts.roboto(
-                                                    fontSize: 16.0,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white),
+Padding(
+
+  padding: const EdgeInsets.only(left: 6,right: 6,bottom: 8),
+  child: ExpansionTile(
+  initiallyExpanded: true,
+    subtitle: Text('Mosque Founded: ${nearbyPlaces?.results?.length}',style: GoogleFonts.roboto(color: Colors.grey),),
+  shape: RoundedRectangleBorder(side: BorderSide.none,borderRadius: BorderRadius.circular(20)),
+    backgroundColor: Colors.black,
+    collapsedBackgroundColor:Colors.black ,
+    // initiallyExpanded: true,
+    title: Text('NEARBY MOSQUES',style: GoogleFonts.roboto(color: Colors.white,fontWeight: FontWeight.bold),),
+    children: [ Container(
+      // height: Get.height*0.4,
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: nearbyPlaces?.results?.length,
+        itemBuilder: (context,index){
+        return Container(
+          // height: Get.height*0.12,
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                                      // alignment: Alignment.center,
+                                      width: MediaQuery.of(context).size.width,
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 5.0,vertical: 10),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(20),
+                                          color: Colors.grey.shade900.withOpacity(0.8)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: Get.width * 0.6,
+                                                child: Text(
+                                                  '${nearbyPlaces?.results?[index].name ?? ""}'.toUpperCase(),
+                                                  style: GoogleFonts.roboto(
+                                                      fontSize: 16.0,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.white),
+                                                ),
                                               ),
-                                            ),
-                                            Container(
-                                              width: Get.width * 0.65,
-                                              child: Text(
-                                                '${i.vicinity ?? ""}',
-                                                style: GoogleFonts.roboto(
-                                                    fontSize: 16.0,
-                                                    color: Colors.grey),
+                                              Container(
+                                                width: Get.width * 0.65,
+                                                child: Text(
+                                                  '${nearbyPlaces?.results?[index].vicinity ?? ""}',
+                                                  style: GoogleFonts.roboto(
+                                                      fontSize: 16.0,
+                                                      color: Colors.grey),
+                                                ),
                                               ),
-                                            ),
-                                            RatingBar.builder(
-                                              initialRating:
-                                                  i.rating?.toDouble() ?? 0,
-                                              itemSize: 16,
-                                              direction: Axis.horizontal,
-                                              allowHalfRating: true,
-                                              ignoreGestures: true,
-                                              itemCount: 5,
-                                              itemPadding: EdgeInsets.symmetric(
-                                                  horizontal: 4.0),
-                                              itemBuilder: (context, _) => Icon(
-                                                Icons.star,
-                                                color: Colors.amber,
-                                              ),
-                                              onRatingUpdate: (rating) {
-                                                print(rating);
+                                              RatingBar.builder(
+                                                initialRating:
+                                                    nearbyPlaces?.results?[index].rating?.toDouble() ?? 0,
+                                                itemSize: 16,
+                                                direction: Axis.horizontal,
+                                                allowHalfRating: true,
+                                                ignoreGestures: true,
+                                                itemCount: 5,
+                                                itemPadding: EdgeInsets.symmetric(
+                                                    horizontal: 4.0),
+                                                itemBuilder: (context, _) => Icon(
+                                                  Icons.star,
+                                                  color: Colors.amber,
+                                                ),
+                                                onRatingUpdate: (rating) {
+                                                  print(rating);
+                                                },
+                                              )
+                                            ],
+                                          ),
+                                          IconButton(
+                                              onPressed: () async {
+                                                await getDirection(
+                                                    nearbyPlaces?.results?[index].geometry?.location?.lat ??
+                                                        0,
+                                                    nearbyPlaces?.results?[index].geometry?.location?.lng ??
+                                                        0);
+      
+                                                await _addPolyline();
+                                                print(
+                                                    '${nearbyPlaces?.results?[index].geometry?.location?.lat} llaatt');
+                                                print(
+                                                    '${nearbyPlaces?.results?[index].geometry?.location?.lng} llnngg');
+      
+                                                setState(() {});
+                                                // MapLauncher.showDirections(
+                                                //     mapType: MapType.google,
+                                                //     origin:
+                                                //         Coords(
+                                                //             _currentPosition
+                                                //                     ?.latitude ??
+                                                //                 0,
+                                                //             _currentPosition
+                                                //                     ?.longitude ??
+                                                //                 0),
+                                                //     originTitle: 'Your Locations',
+                                                //     destinationTitle:
+                                                //         'Destination Location',
+                                                //     destination: Coords(
+                                                //         i.geometry?.location
+                                                //                 ?.lat ??
+                                                //             0,
+                                                //         i.geometry?.location
+                                                //                 ?.lng ??
+                                                //             0));
                                               },
-                                            )
-                                          ],
-                                        ),
-                                        IconButton(
-                                            onPressed: () async {
-                                              await getDirection(
-                                                  i.geometry?.location?.lat ??
-                                                      0,
-                                                  i.geometry?.location?.lng ??
-                                                      0);
-
-                                              await _addPolyline();
-                                              print(
-                                                  '${i.geometry?.location?.lat} llaatt');
-                                              print(
-                                                  '${i.geometry?.location?.lng} llnngg');
-
-                                              setState(() {});
-                                              // MapLauncher.showDirections(
-                                              //     mapType: MapType.google,
-                                              //     origin:
-                                              //         Coords(
-                                              //             _currentPosition
-                                              //                     ?.latitude ??
-                                              //                 0,
-                                              //             _currentPosition
-                                              //                     ?.longitude ??
-                                              //                 0),
-                                              //     originTitle: 'Your Locations',
-                                              //     destinationTitle:
-                                              //         'Destination Location',
-                                              //     destination: Coords(
-                                              //         i.geometry?.location
-                                              //                 ?.lat ??
-                                              //             0,
-                                              //         i.geometry?.location
-                                              //                 ?.lng ??
-                                              //             0));
-                                            },
-                                            icon: Icon(
-                                              Icons.directions_outlined,
-                                              size: 40,
-                                              color: Colors.blue,
-                                            ))
-                                      ],
-                                    ));
-                              } else {
-                                return Center(
-                                    child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                        // alignment: Alignment.center,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 5.0),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            color: Colors.white),
-                                        child: Center(
-                                            child: CircularProgressIndicator(
-                                          color: Colors.blue,
-                                        ))));
-                              }
-                            },
-                          );
-                        } else {
-                          return CircularProgressIndicator();
-                        }
-                      }).toList(),
-                    )
-
-                    // ListView.builder(
-                    //     scrollDirection: Axis.horizontal,
-                    //     itemCount: nearbyPlaces?.results?.length,
-                    //     shrinkWrap: true,
-                    //     itemBuilder: (context, index) {
-                    //       lat = nearbyPlaces!
-                    //           .results![index].geometry!.location!.lat!;
-
-                    //       lng = nearbyPlaces!
-                    //           .results![index].geometry!.location!.lng!;
-
-                    //       listIndex = index;
-                    //       print("${nearbyPlaces!.results?.length}zzzz");
-                    //       if (nearbyPlaces!.results!.isNotEmpty) {
-                    //         // lat = nearbyPlaces!
-                    //         //     .results![index].geometry!.location!.lat!;
-
-                    //         // lng = nearbyPlaces!
-                    //         //     .results![index].geometry!.location!.lng!;
-
-                    //         return Container(
-                    //           margin: EdgeInsets.symmetric(vertical: 8),
-                    //           height: Get.height * 0.15,
-                    //           width: Get.width,
-                    //           color: Colors.grey.shade100,
-                    //           child: Column(
-                    //             children: [
-                    //               Text('${nearbyPlaces?.results?[index].name}'),
-                    //               Text('$address'),
-                    //             ],
-                    //           ),
-                    //         );
-                    //       } else {
-                    //         return Text("data");
-                    //       }
-                    //     }),
-
-                    )
-              ],
-            ),
-          ),
+                                              icon: Icon(
+                                                Icons.directions_outlined,
+                                                size: 40,
+                                                color: Colors.blue,
+                                              ))
+                                        ],
+                                      ));
+      }),
+    )],
+    // child: Container(
+    //   margin: EdgeInsets.all(10),
+    //   height: Get.height*0.14,
+    //   width: Get.width,
+    //   decoration: BoxDecoration(color: Colors.black.withOpacity(0.8)),
+    // ),
+  ),
+)
         ],
       ),
     );

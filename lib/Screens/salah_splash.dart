@@ -24,13 +24,11 @@ class _SalahSplashState extends State<SalahSplash> {
   void initState() {
     Timer(Duration(seconds: 3), () {
       final selectedCountry = constant.box.read('selectedCountry');
-      if (selectedCountry != null) {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (builder) => SalahBottomBar()));
+      if (selectedCountry!=null) {
+       Get.offAll(  SalahBottomBar());
       } else {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (builder) => SelectCountry()));
-      }
+         Get.offAll(()=>SelectCountry());
+      } 
       // constant.box.read('selectedCountry') != '' ||
       //         constant.box.read('selectedCountry') != null
       //     ? Get.offAll(SalahBottomBar())
