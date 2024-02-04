@@ -45,7 +45,7 @@ class _SalahState extends State<Salah> {
           // scaffoldBackgroundColor: Color(0xff172222),
           ),
       debugShowCheckedModeBanner: false,
-      home: SalahBottomBar(),
+      home: SalahSplash(),
     );
   }
 }
