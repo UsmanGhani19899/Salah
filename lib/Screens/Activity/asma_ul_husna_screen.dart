@@ -66,7 +66,7 @@ class _AsmaUlHusnaScreenState extends State<AsmaUlHusnaScreen> {
                       // height: 90,
                       child: ExpansionTile(
                         tilePadding:
-                            EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                            EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                         collapsedShape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
                         leading: Stack(
@@ -78,7 +78,7 @@ class _AsmaUlHusnaScreenState extends State<AsmaUlHusnaScreen> {
                             ),
                             Image(
                               image: AssetImage('assets/images/shape.png'),
-                              color: Colors.purple,
+                              color: Colors.grey.shade800,
                             )
                           ],
                         ),

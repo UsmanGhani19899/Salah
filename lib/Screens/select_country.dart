@@ -139,8 +139,8 @@ String showError= "";
                           setState(() {
                             // selectedIndex = 0;
                           });
-                        }
-                        else {
+                        }  
+                        else   {
                           // selectedIndex = 0;
               
     results = countriesModel!.data
@@ -150,7 +150,7 @@ String showError= "";
                               .toList();
                           setState(() {});
                       
-                        }
+                        }  
 
                         setState(() {
                           filteredList = results;
@@ -185,13 +185,13 @@ String showError= "";
               // margin: EdgeInsets.symmetric(vertical: 10),
               // height: 400,
               child: 
-              filteredList?.isNotEmpty ?? false  
+              filteredList?.isNotEmpty ?? false
 ?              ListView.builder(
                       itemCount: filteredList?.length,
                       itemBuilder: (context, index) {
                          return GestureDetector(
                             onTap: () async{
-                             await cons.box.write('selectedCountry',
+                               cons.box.write('selectedCountry',
                                   filteredList?[index].name);
                               setState(() {
                                 selectedIndex = index;

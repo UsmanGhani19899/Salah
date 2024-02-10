@@ -14,20 +14,27 @@ class TasbeehScreen extends StatefulWidget {
   State<TasbeehScreen> createState() => _TasbeehScreenState();
 }
 
-int _firstcounter = 0;
+int _counter = 0;
 
 int index = 0;
 Constant box = Constant();
 
 class _TasbeehScreenState extends State<TasbeehScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    _counter=0;
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         setState(() {
+_counter++;
           // index++;
           // _firstcounter++;
-          box.box.write('firstCounter', _firstcounter++);
+          // box.box.write('firstCounter', _firstcounter++);
 
           //   if (index <= 33) {
           //     tasbeehName = 'الحمد لله';
@@ -53,6 +60,9 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
         });
       },
       child: Scaffold(
+        appBar: AppBar(
+        backgroundColor: Colors.transparent,
+          iconTheme: IconThemeData(color: Colors.white),),
         // backgroundColor: const Color.fromARGB(255, 169, 165, 165),
         body: Container(
           // padding: EdgeInsets.symmetric(vertical: 60),
@@ -73,7 +83,7 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
                 backgroundColor: Colors.grey.shade800,
                 radius: Get.height * 0.15,
                 child: Text(
-                  '$_firstcounter',
+                  '$_counter',
                   style: GoogleFonts.roboto(
                       color: Colors.white,
                       fontWeight: FontWeight.w300,
@@ -84,8 +94,8 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
                   icon: Icons.replay_outlined,
                   onTap: () {
                     setState(() {
-                      _firstcounter = 0;
-                      box.box.write('firstCounter', _firstcounter);
+                      _counter = 0;
+                      // box.box.write('firstCounter', _firstcounter);
                     });
                   })
             ],

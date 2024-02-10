@@ -1,13 +1,8 @@
-import 'dart:async';
-import 'dart:ui';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'dart:async'; 
+import 'package:flutter/material.dart'; 
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:salah/Screens/select_country.dart';
 import 'package:salah/Widget/salah_bottomBar.dart';
-
 import '../Core/get_constants.dart';
 
 class SalahSplash extends StatefulWidget {
@@ -18,31 +13,28 @@ class SalahSplash extends StatefulWidget {
 }
 
 Constant constant = Constant();
-
+String? yourCountry = constant.box.read('selectedCountry');
+String? yourCity = constant.box.read('selectedCity');
 class _SalahSplashState extends State<SalahSplash> {
-  @override
+ @override
   void initState() {
-    Timer(Duration(seconds: 3), () {
-      final selectedCountry = constant.box.read('selectedCountry');
-      if (selectedCountry!=null) {
+      Timer(Duration(seconds: 3), () {
+      // String selectedCountry = constant.box.read('selectedCountry');
+      if (yourCountry!=null&& yourCountry!.isNotEmpty )  {
        Get.offAll(  SalahBottomBar());
       } else {
-         Get.offAll(()=>SelectCountry());
+         Get.offAll( SelectCountry());
       } 
-      // constant.box.read('selectedCountry') != '' ||
-      //         constant.box.read('selectedCountry') != null
-      //     ? Get.offAll(SalahBottomBar())
-      //     : Get.offAll(SelectCountry());
-    });
-    // print('${constant.box.read('selectedCountry')}ffff');
+     
+    }); 
     // TODO: implement initState
     super.initState();
   }
-
+@override
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: Color(0xff172222),
-      body: Center(child: Image(image: AssetImage('assets/images/splash.png'))),
+      body: Center(child:Image(image: AssetImage('assets/images/splash.png'),)),
     );
   }
 }

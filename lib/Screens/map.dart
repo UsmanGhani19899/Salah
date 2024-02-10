@@ -6,7 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:salah/Core/get_constants.dart';
 
 class SalahMap extends StatefulWidget {
-  final polylines;
+  // final polylines;
   final List<Marker>? marker;
   final double mosqueLat;
   final double mosqueLong;
@@ -14,7 +14,7 @@ class SalahMap extends StatefulWidget {
   final double lnng;
   const SalahMap(
       {super.key,
-      required this.polylines,
+      // required this.polylines,
       required this.marker,
       required this.mosqueLat,
       required this.mosqueLong,
@@ -28,6 +28,16 @@ class SalahMap extends StatefulWidget {
 String? _mapStyle;
 Completer<GoogleMapController> _controller = Completer();
 Map<MarkerId, Marker> _markersId = <MarkerId, Marker>{};
+
+  // final Set<Polyline> _polyline = {};
+  //  List<LatLng> latLen = [
+  //   LatLng(19.0759837, 72.8776559),
+  //   LatLng(28.679079, 77.069710),
+  //   LatLng(26.850000, 80.949997),
+  //   LatLng(24.879999, 74.629997),
+  //   LatLng(16.166700, 74.833298),
+  //   LatLng(12.971599, 77.594563),
+  // ];
 // List<Marker> markers = [
 //   Marker(
 //     markerId: MarkerId('marker1'),
@@ -50,6 +60,16 @@ Marker demo = new Marker(
 );
 
 class Salah_MapState extends State<SalahMap> {
+  final Set<Polyline>_polyline={};
+static   LatLng _center =   LatLng(33.738045, 73.084488);
+//add your lat and lng where you wants to draw polyline
+LatLng _lastMapPosition = _center;
+// List<LatLng> latlng = List();
+LatLng _new = LatLng(33.738045, 73.084488);
+LatLng _news = LatLng(33.567997728, 72.635997456);
+
+// latlng.add(_new);
+// latlng.add(_news);
   Completer<GoogleMapController> _controller = Completer();
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
@@ -93,6 +113,13 @@ class Salah_MapState extends State<SalahMap> {
     rootBundle.loadString('assets/images/map_theme_night.txt').then((string) {
       _mapStyle = string;
     });
+          _polyline.add(Polyline(
+            polylineId: PolylineId(_lastMapPosition.toString()),
+            visible: true,
+            //latlng is List<LatLng>
+            points: [LatLng(33.738045, 73.084488)],
+            color: Colors.blue,
+        ));
     // TODO: implement initState
 
     super.initState();
@@ -110,15 +137,16 @@ class Salah_MapState extends State<SalahMap> {
               
               zoomControlsEnabled: false,
                 buildingsEnabled: false,
-                polylines: widget.polylines,
+                // polylines: widget.polylines,
                 myLocationEnabled: true,
                 compassEnabled: false,
                 markers: Set<Marker>.of(widget.marker ?? []),
+                polylines: _polyline,
                 // markers: [_markerId] = _marker,
                 onMapCreated: _onMapCreated,
                 initialCameraPosition: CameraPosition(
                   target: LatLng(widget.lat, widget.lnng),
-                  zoom: 15,
+                  zoom: 13,
                 ),
               ));
   }

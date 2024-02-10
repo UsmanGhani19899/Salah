@@ -96,8 +96,9 @@ class _ListenQuranScreenState extends State<ListenQuranScreen> {
                 ),
                 itemBuilder: (context, index) {
                   return Container(
+                    alignment: Alignment.center,
                     // color: Colors.grey.shade900,
-                    height: Get.height * 0.58,
+                    // height: Get.height * 0.58,
                     child: SingleChildScrollView(
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 12),
@@ -245,6 +246,7 @@ class _ListenQuranScreenState extends State<ListenQuranScreen> {
                       super.dispose();
                       audioPlayer.dispose();
                     }
+                  
                   },
                   child: CircleAvatar(
                     backgroundColor: Color(0xff35c55e),

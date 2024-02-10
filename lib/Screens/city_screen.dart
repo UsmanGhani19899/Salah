@@ -55,9 +55,11 @@ class _CitySelectScreenState extends State<CitySelectScreen> {
                   selectedIndex = index;
                 });
 
-              await  cons.box
+                 cons.box
                     .write('selectedCity', cityModel?.geonames?[index].name);
-                
+
+                    print('${cons.box.read('selectedCity')}klklkl');
+                Get.back();
               },
               child: Container(
                 decoration: BoxDecoration(
