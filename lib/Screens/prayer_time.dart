@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:salah/Core/dio.dart';
 import 'package:salah/Core/get_api.dart';
 import 'package:salah/Core/get_constants.dart';
+import 'package:salah/Core/my_controller.dart';
 import 'package:salah/Core/notification_service.dart';
 import 'package:salah/Models/islamic_calender_model.dart';
 import 'package:salah/Models/prayer_Time_model.dart';
@@ -39,59 +41,60 @@ Constant constant = Constant();
 
 // String fajr = "";
 class _PrayerTimeScreenState extends State<PrayerTimeScreen> {
-  String fajr = "";
-  String dhuhr = "";
-  String asr = "";
-  String magrib = "";
-  String isha = "";
-  String date = "";
-  String day = "";
-  String month = "";
-  String year = "";
-  String fullDate = "";
+  MyController myContr = Get.put(MyController());
+  // String fajr = "";
+  // String dhuhr = "";
+  // String asr = "";
+  // String magrib = "";
+  // String isha = "";
+  // String date = "";
+  // String day = "";
+  // String month = "";
+  // String year = "";
+  // String fullDate = "";
   // final box = GetStorage();
 
   String selectDate = '';
-  Future<void> getCalender() async {
-    try {
-       DateTime now = DateTime.now();
+  // Future<void> getCalender() async {
+  //   try {
+  //      DateTime now = DateTime.now();
 
-  // Format the date as "day-month-year"
-  String formattedDate = DateFormat('d-M-yyyy').format(now);
-      islamicCalenderModel = await getApi.getCalender(formattedDate);
-      print('$date dateislamic');
-      day = islamicCalenderModel!.data.hijri.day;
-      month = islamicCalenderModel!.data.hijri.month.en;
-      year = islamicCalenderModel!.data.hijri.year;
-      fullDate = islamicCalenderModel!.data.gregorian.date;
-      setState(() {});
-    } catch (e) {}
-  }
+  // // Format the date as "day-month-year"
+  // String formattedDate = DateFormat('d-M-yyyy').format(now);
+  //     islamicCalenderModel = await getApi.getCalender(formattedDate);
+  //     print('$date dateislamic');
+  //     day = islamicCalenderModel!.data.hijri.day;
+  //     month = islamicCalenderModel!.data.hijri.month.en;
+  //     year = islamicCalenderModel!.data.hijri.year;
+  //     fullDate = islamicCalenderModel!.data.gregorian.date;
+  //     setState(() {});
+  //   } catch (e) {}
+  // }
 
 //  Working
-  Future<void> getTime() async {
-    try {
-      prayerTimeModel = await getApi.getPrayerTime(
-          constant.box.read('selectedCountry'),
-          constant.box.read('selectedCity'),
-          // 'Australia',"Sydney",
-          '${_selectedValue}');
-      // print('$address addd');
+  // Future<void> getTime() async {
+  //   try {
+  //     prayerTimeModel = await getApi.getPrayerTime(
+  //         constant.box.read('selectedCountry'),
+  //         constant.box.read('selectedCity'),
+  //         // 'Australia',"Sydney",
+  //         '${_selectedValue}');
+  //     // print('$address addd');
 
-      log('${prayerTimeModel?.data?.timings?.Asr} fajren');
-      setState(() {});
+  //     log('${prayerTimeModel?.data?.timings?.Asr} fajren');
+  //     setState(() {});
 
-      fajr = convertTo12HourFormat(prayerTimeModel!.data.timings.Fajr);
-      dhuhr = convertTo12HourFormat(prayerTimeModel!.data.timings.Dhuhr);
-      asr = convertTo12HourFormat(prayerTimeModel!.data.timings.Asr);
-      magrib = convertTo12HourFormat(prayerTimeModel!.data.timings.Maghrib);
-      isha = convertTo12HourFormat(prayerTimeModel!.data.timings.Isha);
+  //     fajr = convertTo12HourFormat(prayerTimeModel!.data.timings.Fajr);
+  //     dhuhr = convertTo12HourFormat(prayerTimeModel!.data.timings.Dhuhr);
+  //     asr = convertTo12HourFormat(prayerTimeModel!.data.timings.Asr);
+  //     magrib = convertTo12HourFormat(prayerTimeModel!.data.timings.Maghrib);
+  //     isha = convertTo12HourFormat(prayerTimeModel!.data.timings.Isha);
 
-      // constant.box.write('magrib', convertTo12HourFormat('10:00'));
-    } catch (e) {
-      print("$e erer");
-    }
-  }
+  //     // constant.box.write('magrib', convertTo12HourFormat('10:00'));
+  //   } catch (e) {
+  //     print("$e erer");
+  //   }
+  // }
 
 //  Working
   String convertTo12HourFormat(String time24Hour) {
@@ -120,24 +123,24 @@ class _PrayerTimeScreenState extends State<PrayerTimeScreen> {
   //   return cmp.toString();
   // }
 
-  Future<void> nextPray() async {
-    if (nowTime == '8:10 PM') {
-      nextPrayerName = 'Dhur';
-    } else if (nowTime == dhuhr) {
-      nextPrayerName = 'Asr';
-    } else if (nowTime == asr) {
-      nextPrayerName = 'Magrib';
-    } else if (nowTime == magrib) {
-      nextPrayerName = 'Isha';
-    } else if (nowTime == isha) {
-      nextPrayerName = 'Fajr';
-    }
-    setState(() {});
-  }
+  // Future<void> nextPray() async {
+  //   if (nowTime == '8:10 PM') {
+  //     nextPrayerName = 'Dhur';
+  //   } else if (nowTime == dhuhr) {
+  //     nextPrayerName = 'Asr';
+  //   } else if (nowTime == asr) {
+  //     nextPrayerName = 'Magrib';
+  //   } else if (nowTime == magrib) {
+  //     nextPrayerName = 'Isha';
+  //   } else if (nowTime == isha) {
+  //     nextPrayerName = 'Fajr';
+  //   }
+  //   setState(() {});
+  // }
 
   String formatDuration() {
     DateTime endDate = DateFormat("h:mm a").parse("${nowTime}");
-    DateTime startDate = DateFormat("h:mm a").parse("${magrib}");
+    DateTime startDate = DateFormat("h:mm a").parse("${myContr.magrib.value}");
 
 // Get the Duration using the diferrence method
 
@@ -214,11 +217,16 @@ class _PrayerTimeScreenState extends State<PrayerTimeScreen> {
   }
 
   Future<void> apis() async {
-    await getTime();
+ 
+    await myContr.getTime();
+    await myContr.getCalender();
+
     await timeDiff();
-    await nextPray();
+       getUpcomingPrayer();
+    getNextPrayer();
+    
     // await compareTimer();
-    await getCalender();
+    // await getCalender();
     await changeTheme();
   }
 
@@ -286,44 +294,146 @@ class _PrayerTimeScreenState extends State<PrayerTimeScreen> {
           UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
+ 
+ String nowprayerTime ="";
+ String getNextPrayer() {
+  List<String> prayerNames = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+  List<String> prayerTimings = [
+    myContr.fajr.value,
+    myContr.dhuhr.value,
+    myContr.asr.value,
+    myContr.magrib.value,
+    myContr.isha.value,
+  ];
+
+  DateTime now = DateTime.now();
+  DateTime now12 = DateFormat('h:mm a').parse(now12HourFormat());
+  DateTime nextPrayerTime = DateTime(3000);
+  String nextPrayer = '';
+ 
+ 
+
+   
+  for (int i = 0; i < prayerTimings.length; i++) {
+    try {
+      DateTime prayerTime = DateFormat('h:mm a').parse(prayerTimings[i]);
+      if (prayerTime.isAtSameMomentAs(now12) || prayerTime.isAfter(now12) && prayerTime.isBefore(nextPrayerTime)) {
+        nextPrayerTime = prayerTime;
+        nextPrayer = prayerNames[i];
+      String formattedTime = DateFormat('h:mm a').format(nextPrayerTime);
+      nowprayerTime = formattedTime;
+   break;
+      }
+    } catch (e) {
+      print('Error parsing time: $e');
+    }
+   
+  }
+
+  return nextPrayer.isNotEmpty ? nextPrayer : "No prayer found";
+}
+
+ 
+String upcomingPrayerTimes="";
+
+  String getUpcomingPrayer() {
+  List<String> prayerNames = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+  List<String> prayerTimings = [
+    myContr.fajr.value,
+    myContr.dhuhr.value,
+    myContr.asr.value,
+    myContr.magrib.value,
+    myContr.isha.value,
+  ];
+
+  DateTime now = DateTime.now();
+  DateTime upcomingPrayerTime = DateTime(3000);
+  String upcomingPrayer = '';
+
+  for (int i = 0; i < prayerTimings.length; i++) {
+    try {
+      DateTime prayerTime = DateFormat('h:mm a').parse(prayerTimings[i]);
+        DateTime now12 = DateFormat('h:mm a').parse(now12HourFormat());
+      if (prayerTime.isBefore(now12) || prayerTime.isAfter(now12)) {
+        upcomingPrayerTime = prayerTime;
+        upcomingPrayer = prayerNames[i];
+        String formattedTime = DateFormat('h:mm a').format(upcomingPrayerTime);
+        upcomingPrayerTimes = formattedTime;
+        break;
+        // break;
+    //  if(upcomingPrayer == "Fajr"){break;}
+         // No need to continue looping once we find the upcoming prayer
+      }
+    } catch (e) {
+      print('Error parsing time: $e');
+    }
+  }
+
+  return upcomingPrayer.isNotEmpty ? upcomingPrayer : "No prayer found";
+}
+String? yourCountry = constant.box.read('selectedCountry');
+String? yourCity = constant.box.read('selectedCity');
+
 String imgNamaz = "";
   // NotificationHelper _notificationHelper = NotificationHelper();
   final DateTime scehduleing = DateFormat('HH:mm').parse('11:41');
   @override
   void initState() {
-    Timer.periodic(Duration(seconds: 1), (Timer timer) {
-      if(now12HourFormat() == '8:47 PM'){
-sendNotification();
-      }else{
-null;
-      }
+    Timer.periodic(Duration(seconds: 1), (timer) { 
+        now12HourFormat();
+      getUpcomingPrayer();
+      getNextPrayer();
+  
       setState(() {
-            DateTime date = DateTime.now();
-    String time = "${date.hour}:${date.minute}:${date.second}";
-    final DateTime dateTime = DateFormat('HH:mm').parse(time);
-    // final DateTime now= DateFormat('h:mm a').format(dateTime) as DateTime;
-    //  final DateTime namazTime = DateFormat('HH:mm').parse(fajr);
-    //  final DateTime nowNamaz= DateFormat('h:mm a').format(namazTime) as DateTime;
-        // Check if it's time to change the text
-        if (dateTime.isAfter(DateTime(2024, 2, 8, 10, 45))) {
-          imgNamaz = 'assets/images/night.jpg';
-          setState(() {
-            
-          });
-          // Cancel the timer once the text is changed
-          timer.cancel();
-        }else{
-          imgNamaz = 'assets/images/night.jpg';
-          setState(() {
-            
-          });
-        }
+        
       });
- });
+    });
+    // myContr.prayer();
+//     Timer.periodic(Duration(seconds: 1), (Timer timer) {
+//       if(now12HourFormat() == '11:59 AM'){
+// sendNotification();
+//       }else if(now12HourFormat() == dhuhr){
+// sendNotification();
+//       }
+//       else if(now12HourFormat() == asr){
+// sendNotification();
+//       }
+//       else if(now12HourFormat() == magrib){
+// sendNotification();
+//       }
+//       else if(now12HourFormat() == isha){
+// sendNotification();
+//       }
+//       setState(() {
+//             DateTime date = DateTime.now();
+//     String time = "${date.hour}:${date.minute}:${date.second}";
+//     final DateTime dateTime = DateFormat('HH:mm').parse(time);
+//     // final DateTime now= DateFormat('h:mm a').format(dateTime) as DateTime;
+//     //  final DateTime namazTime = DateFormat('HH:mm').parse(fajr);
+//     //  final DateTime nowNamaz= DateFormat('h:mm a').format(namazTime) as DateTime;
+//         // Check if it's time to change the text
+//         if (dateTime.isAfter(DateTime(2024, 2, 8, 10, 45))) {
+//           imgNamaz = 'assets/images/night.jpg';
+//           setState(() {
+            
+//           });
+//           // Cancel the timer once the text is changed
+//           timer.cancel();
+//         }else{
+//           imgNamaz = 'assets/images/night.jpg';
+//           setState(() {
+            
+//           });
+//         }
+//       });
+//  });
+    
     // TODO: implement initState
     super.initState();
     apis();
  
+   myContr.createRewardedAd();
+   myContr.showRewardedAd();
 //     Timer.periodic(Duration(seconds: 1), (timer) {
 //       setState(() {
 //         // durationPrayer =
@@ -362,40 +472,95 @@ null;
         //     // centerTitle: true,
         //     title: Text(
         //       'Prayer Time',
-        //       style: GoogleFonts.roboto(
+        //       style: GoogleFonts.montserrat(
         //           color: Colors.white, fontWeight: FontWeight.bold),
         //     )),
         // // backgroundColor: Color(0xff172222),
-        body: Column(
+        body: 
+        Obx(() => Column(
+        
           // alignment: Alignment.bottomCenter,
           children: [
             Expanded(
               child: Container(
-                alignment: Alignment.center,
+                margin: EdgeInsets.all(10),
+                alignment: Alignment.centerLeft,
+                
+                decoration: BoxDecoration(
+                  
+                  //  image: DecorationImage(image: AssetImage('assets/images/night.jpg'),fit: BoxFit.cover,alignment: Alignment.topCenter,),
+                   
+                  color: Colors.transparent,borderRadius: BorderRadius.circular(15)),
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
                 // margin: EdgeInsets.symmetric(vertical: 10, horizontal: 2),
                 height: Get.height  ,
                 width: Get.width,
-                 decoration: BoxDecoration(
-                  image: DecorationImage(image: AssetImage('assets/images/night.jpg'),fit: BoxFit.cover,alignment: Alignment.topCenter,),
-                  borderRadius: BorderRadius.circular(
-                    0,
-                  ),
-                  // color: Colors.grey.shade900,
+                //  decoration: BoxDecoration(
+                //   image: DecorationImage(image: AssetImage('assets/images/night.jpg'),fit: BoxFit.cover,alignment: Alignment.topCenter,),
+                //   borderRadius: BorderRadius.circular(
+                //     0,
+                //   ),
+                //   // color: Colors.grey.shade900,
                   
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                // ),
+                child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    //  Container(
-                    //   alignment: Alignment.center,
-                    //   height: Get.height*0.35,
-                    //   child: Text("${imgNamaz}",style: GoogleFonts.roboto(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 45),)),
-                // SizedBox()
-                 ],
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("${yourCountry} , ${yourCity}",style: GoogleFonts.montserrat(
+                              
+                              color: Colors.white,fontWeight: FontWeight.w300,fontSize: 18,),),
+                          
+        ],),
+                          Text("${now12HourFormat()}",style: GoogleFonts.montserrat(
+                              
+                              color: Colors.white,fontWeight: FontWeight.bold,fontSize: 60,),),
+                           
+                   
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                 crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                            Text("Next\nPrayer",style: GoogleFonts.montserrat(color: Colors.white,fontWeight: FontWeight.w300,fontSize: 20),),
+                             
+                              Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                             children: [
+                               
+                              Text("${ getNextPrayer()}",style: GoogleFonts.montserrat(
+                                
+                                color: Colors.white,fontWeight: FontWeight.bold,fontSize: 22,),),
+                                 Text("${nowprayerTime}",style: GoogleFonts.montserrat(color: Colors.white,fontWeight: FontWeight.w300,fontSize: 16),),
+                                        
+                             ],
+                           ),
+                      // SizedBox(height: 15,),
+                      //      Column(
+                      //       crossAxisAlignment: CrossAxisAlignment.start,
+                      //        children: [
+                      //          Text("upcoming",style: GoogleFonts.montserrat(color: Colors.white,fontWeight: FontWeight.w300,fontSize: 16),),
+                               
+                      //          Text("${ getUpcomingPrayer()}",style: GoogleFonts.montserrat(
+                      //           letterSpacing: 1,
+                      //           color: Colors.white,fontWeight: FontWeight.bold,fontSize: 22),),
+                      //             Text("${upcomingPrayerTimes}",style: GoogleFonts.montserrat(color: Colors.white,fontWeight: FontWeight.w300,fontSize: 16),),
+                                        
+                      //        ],
+                      //      ),
+                                   
+                      // SizedBox()
+                       ],
+                      ),
+                    ),
+                          
+                  ],
                 ),
                              ),
             ),
+                          
+                          
                              Expanded(
                                child: Padding(
                                 
@@ -405,7 +570,7 @@ null;
                                   alignment: Alignment.bottomCenter,
                                             //  height: Get.height*0.9,
                                              decoration: BoxDecoration(
-                                       color: Colors.black,
+                                      //  color: Colors.black,
                                     
                                       )
                                       ,
@@ -417,97 +582,102 @@ null;
                                           borderRadius: BorderRadius.circular(20)),
                                         
                                  child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                    children: [
- Obx(() => Container( 
-            margin: EdgeInsets.symmetric(vertical: 10),
-                      child: myContr.isAdLoaded.value
-                          ? ConstrainedBox(
+        //  Obx(() => Container( 
+        //     margin: EdgeInsets.symmetric(vertical: 10),
+        //               child: myContr.isAdLoaded.value
+        //                   ? ConstrainedBox(
                             
-                              constraints: const BoxConstraints(
-                                maxHeight: 100,
-                                minHeight: 100,
+        //                       constraints: const BoxConstraints(
+        //                         maxHeight: 100,
+        //                         minHeight: 100,
                                 
-                              ),
-                              child: AdWidget(ad: myContr.nativeAd!))
-                          :   Container(
+        //                       ),
+        //                       child: AdWidget(ad: myContr.nativeAd!))
+        //                   :   Container(
                         
-                          ),
-                    )),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                                          child: Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                           children: [
-                                          
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                             Text('Assalamu\nAliekum',style: GoogleFonts.roboto(color: Colors.white,fontSize: 30,fontWeight: FontWeight.w300),),
-                                                           
-                                          
-                                          ],),
-                                          
-                                                             Container(
-                                                              padding: EdgeInsets.all(9),
-                                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),color:  Color(0xff35c55e)),
-                                                              
-                                                              width: Get.width*0.45,
-                                                              child: Row(
-                                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                                children: [
-                                                                  Column(
-                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                    children: [
-                                                                    Text('${ DateFormat('MMMM').format(DateTime.now())}',style: GoogleFonts.roboto(color: Colors.black),),
-                                                                      Text('${DateTime.now().day.toString()}',style: GoogleFonts.roboto(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 25),),
-                                            
-                                                                  Text('$day $month $year',style: GoogleFonts.roboto(color: Colors.black),),
-                                             ],),
-                                                              
-                                                              CircleAvatar(
-                                                                backgroundColor: Colors.black,
-                                                                radius: 20,
-                                                                child: Icon(Icons.calendar_month_rounded,color: Colors.white,),)
-                                                                ],
-                                                              ),
-                                                             ),
-                                                           ],
-                                                         ),
-                                        ),
-                                             SizedBox(height: 20,),
-                                     Row(
+        //                   ),
+        //             )),
+                               Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                        children: [
                                         
                                          CustomNamazCard(
                                           icon: FeatherIcons.sunrise,
                                            namazName: 'Fajr',
-                                           namazTime: fajr,
+                                           namazTime: myContr.fajr.value,
                                          ),
                                          CustomNamazCard(
                                           icon: FeatherIcons.sun,
                                            namazName: 'Dhuhr',
-                                           namazTime: dhuhr,
+                                           namazTime: myContr.dhuhr.value,
                                          ),
                                          CustomNamazCard(
                                           icon: FeatherIcons.sun,
                                            namazName: 'Asr',
-                                           namazTime: asr,
+                                           namazTime: myContr.asr.value,
                                          ),
                                          CustomNamazCard(
                                           icon: FeatherIcons.sunset,
                                            namazName: 'Magrib',
-                                           namazTime: magrib,
+                                           namazTime: myContr.magrib.value,
                                          ),
                                          CustomNamazCard(
                                           icon: FeatherIcons.moon,
                                            namazName: 'Isha',
-                                           namazTime: isha,
+                                           namazTime: myContr.isha.value,
                                          ),
                                        ],
                                      ),
-                                   ],
+                                SizedBox(height: 20,),
+                                 Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                                          child: Container(
+                                              padding: EdgeInsets.all(12),
+                                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15),color:  Colors.white),
+                                                             
+                                            child: Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                             children: [
+                                            
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                               Text('Islamic\nCalender',style: GoogleFonts.montserrat(color: Colors.black,fontSize: 30,fontWeight: FontWeight.w300),),
+                                                             
+                                            
+                                            ],),
+                                            
+                                                               Container(
+                                                               
+                                                               
+                                                                child: Row(
+                                                            
+                                                                  children: [
+                                                                    Column(
+                                                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                                                      children: [
+                                                                      Text('${ DateFormat('MMMM').format(DateTime.now())}',style: GoogleFonts.montserrat(color: Colors.black),),
+                                                                        Text('${DateTime.now().day.toString()}',style: GoogleFonts.montserrat(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 25),),
+                                              
+                                                                    Text('${myContr.day.value} ${myContr.month.value} ${myContr.year.value}',style: GoogleFonts.montserrat(color: Colors.black),),
+                                               ],),
+                                                                
+                                                                // CircleAvatar(
+                                                                //   backgroundColor: Colors.black,
+                                                                //   radius: 20,
+                                                                //   child: Icon(Icons.calendar_month_rounded,color: Colors.white,),)
+                                                                 
+                                                                  ],
+                                                                ),
+                                                               ),
+                                                             ],
+                                                           ),
+                                          ),
+                                        ),
+                                           
+                                  ],
                                  ),
                                              ),
                                             
@@ -518,7 +688,13 @@ null;
                       
              
           ],
-        ));
+        ))
+        
+        )
+        
+        ;
+   
+   
     // body: Stack(
     //   alignment: Alignment.bottomCenter,
     //   children: [
@@ -583,7 +759,7 @@ null;
     //           Text(
     //             '${box.read('country')} , ${box.read('city')}'
     //                 .toUpperCase(),
-    //             style: GoogleFonts.roboto(
+    //             style: GoogleFonts.montserrat(
     //                 color: Colors.white,
     //                 fontWeight: FontWeight.w300,
     //                 fontSize: 16),
@@ -593,21 +769,21 @@ null;
     //           ),
     //           Text(
     //             'MAGRIB',
-    //             style: GoogleFonts.roboto(
+    //             style: GoogleFonts.montserrat(
     //                 color: Colors.white,
     //                 fontWeight: FontWeight.bold,
     //                 fontSize: 16),
     //           ),
     //           Text(
     //             '${formatDuration()}',
-    //             style: GoogleFonts.roboto(
+    //             style: GoogleFonts.montserrat(
     //                 color: Colors.white,
     //                 fontWeight: FontWeight.bold,
     //                 fontSize: 35),
     //           ),
     //           Text(
     //             '(${now12HourFormat()})',
-    //             style: GoogleFonts.roboto(
+    //             style: GoogleFonts.montserrat(
     //                 color: Colors.white,
     //                 fontWeight: FontWeight.w300,
     //                 fontSize: 16),
@@ -630,7 +806,7 @@ null;
     //         collapsedBackgroundColor: Color(0xff26254f),
     //         title: Text(
     //           'PRAYER TIME',
-    //           style: GoogleFonts.roboto(
+    //           style: GoogleFonts.montserrat(
     //               color: Colors.white,
     //               fontWeight: FontWeight.bold,
     //               fontSize: 22),

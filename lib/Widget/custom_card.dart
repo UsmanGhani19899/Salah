@@ -33,10 +33,10 @@ class CustomCard extends StatelessWidget {
       
             Text(
               "${cardName}".toUpperCase(),
-              style: GoogleFonts.roboto(
+              style: GoogleFonts.montserrat(
                   fontSize: 22,
                   color: Colors.grey,
-                  fontWeight: FontWeight.w300),
+                  fontWeight: FontWeight.w400),
             ),
             // SizedBox(
             //   height: 10,
@@ -50,7 +50,7 @@ class CustomCard extends StatelessWidget {
             //     // radius: 30,
             //     child: Text(
             //       'Open',
-            //       style: GoogleFonts.roboto(
+            //       style: GoogleFonts.montserrat(
             //           color: Colors.white, fontWeight: FontWeight.bold),
             //     ),
             //   ),

@@ -14,7 +14,7 @@ class LocalNotificationService {
        void initializeSettings(BuildContext context) {
 
     var androidInitializationSettings =
-        const AndroidInitializationSettings("@mipmap/ic_launcher");
+        const AndroidInitializationSettings("assets/images/salah.png");
 
     var initializeIOSSettings = const DarwinInitializationSettings();
 
@@ -93,7 +93,7 @@ void showSimpleNotification() {
         );
 
     flutterLocalNotificationsPlugin.show(
-        0, "notification_title", "notifications _ body", notificationDetails,
+        0, "Prayer Time", "Magrib Prayer", notificationDetails,
         payload: "Data received using payload of notification");
   }
 // Future<void> checkNotificationPermission() async {

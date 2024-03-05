@@ -32,7 +32,7 @@ class _QuranTextEditionState extends State<QuranTextEdition> {
           // elevation: 9,
           title: Text(
             "${widget.surahName}",
-            style: GoogleFonts.roboto(
+            style: GoogleFonts.montserrat(
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),
           ),
         ),
@@ -49,11 +49,11 @@ class _QuranTextEditionState extends State<QuranTextEdition> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [ 
-              Text('${widget.bismillah}',style: GoogleFonts.roboto(
+              Text('${widget.bismillah}',style: GoogleFonts.montserrat(
               fontSize: 30,
               color: Colors.white),textDirection: TextDirection.rtl,),
               SizedBox(height: 80,),
-              Text('${widget.fullSurah}',style: GoogleFonts.roboto(
+              Text('${widget.fullSurah}',style: GoogleFonts.montserrat(
               fontSize: 30,
               color: Colors.white),textDirection: TextDirection.rtl,)]
                

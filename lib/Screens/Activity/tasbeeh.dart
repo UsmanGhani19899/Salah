@@ -74,24 +74,26 @@ _counter++;
             children: [
               Text(
                 "${widget.tasbeehName}",
-                style: GoogleFonts.notoSansArabic(
+                style: GoogleFonts.montserrat(
                     color: Colors.white,
+                    
                     // fontWeight: FontWeight.bold,
-                    fontSize: 35),
+                    fontSize: 40),
               ),
               CircleAvatar(
-                backgroundColor: Colors.grey.shade800,
+                backgroundColor: Colors.white,
                 radius: Get.height * 0.15,
                 child: Text(
                   '$_counter',
-                  style: GoogleFonts.roboto(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w300,
+                  style: GoogleFonts.montserrat(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
                       fontSize: 80),
                 ),
               ),
               CustomRoundedBtn(
                   icon: Icons.replay_outlined,
+                
                   onTap: () {
                     setState(() {
                       _counter = 0;

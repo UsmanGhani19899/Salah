@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:salah/Models/asma_ul_husna_model.dart';
+import 'package:salah/Models/bukhari_hadis_model.dart';
 import 'package:salah/Models/city_model.dart';
 import 'package:salah/Models/countries_model.dart';
 import 'package:salah/Models/direction_model.dart';
@@ -58,4 +59,7 @@ abstract class GetApi {
   @GET(
       'http://api.geonames.org/searchJSON?country={country}&featureClass=P&maxRows=10&username=usmanghani19899')
   Future<CityModel> getCity(@Path('country') String country);
+
+  @GET('https://raw.githubusercontent.com/A7med3bdulBaset/hadith-json/main/db/by_book/the_9_books/bukhari.json')
+  Future<BukhariHadithModel> bukhariHadith();
 }

@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:salah/Models/quran_detail_model.dart';
 import 'package:salah/Screens/Activity/tasbeeh.dart';
+import 'package:salah/Widget/app_bar_widget.dart';
 
 class ListenQuranScreen extends StatefulWidget {
   final String surahName;
@@ -67,15 +68,7 @@ class _ListenQuranScreenState extends State<ListenQuranScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        toolbarHeight: 80,
-        title: Text(
-          '${widget.surahName} ',
-          style: GoogleFonts.notoSansArabic(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),
-        ),
-      ),
+      appBar:AppBarWidget(pageName: '${widget.surahName}'),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -105,11 +98,11 @@ class _ListenQuranScreenState extends State<ListenQuranScreen> {
                         alignment: Alignment.center,
                         child: Text(
                           '${widget.quranDetailTextModel[customIndex].text} ',
-                          style: GoogleFonts.notoSansArabic(
+                          style: GoogleFonts.montserrat(
                               height: 3,
                               color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 25),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30),
                           textDirection: TextDirection.rtl,
                           textAlign: TextAlign.center,
                         ),
@@ -218,7 +211,7 @@ class _ListenQuranScreenState extends State<ListenQuranScreen> {
                     });
                   },
                   child: CircleAvatar(
-                    backgroundColor: Color(0xff35c55e),
+                    backgroundColor: Colors.transparent,
                     radius: 30,
                     child: Center(
                       child: Icon(
@@ -249,7 +242,7 @@ class _ListenQuranScreenState extends State<ListenQuranScreen> {
                   
                   },
                   child: CircleAvatar(
-                    backgroundColor: Color(0xff35c55e),
+                    backgroundColor: Colors.transparent,
                     radius: 30,
                     child: Center(
                       child: Icon(

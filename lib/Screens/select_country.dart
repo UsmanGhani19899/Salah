@@ -110,14 +110,14 @@ String showError= "";
                   // ),
                   Text(
                     "Select Location",
-                    style: GoogleFonts.roboto(
+                    style: GoogleFonts.montserrat(
                         fontSize: 25,
                         color: Colors.grey,
                         fontWeight: FontWeight.w700),
                   ),
                   Text(
                     "Please select your location to help us for give you a better experience",
-                    style: GoogleFonts.roboto(
+                    style: GoogleFonts.montserrat(
                         color: Colors.grey, fontWeight: FontWeight.w400),
                     textAlign: TextAlign.start,
                   ),
@@ -128,7 +128,7 @@ String showError= "";
                   Container(
                     width: Get.width * 0.8,
                     child: TextFormField(
-                      style: GoogleFonts.roboto(
+                      style: GoogleFonts.montserrat(
                           color: Colors.white, fontWeight: FontWeight.bold),
                       controller: controller,
                       onChanged: (val) {
@@ -168,7 +168,7 @@ String showError= "";
                           val!.isEmpty ? "Please Enter Something" : null,
                       decoration: InputDecoration(
                           hintText: 'Serach',
-                          hintStyle: GoogleFonts.roboto(
+                          hintStyle: GoogleFonts.montserrat(
                               color: Colors.grey, fontWeight: FontWeight.bold),
                           prefixIcon: Icon(FeatherIcons.search),
                           focusedBorder: OutlineInputBorder(
@@ -229,7 +229,7 @@ String showError= "";
                                     borderRadius: BorderRadius.circular(15)),
                                 title: Text(
                                   '${filteredList?[index].name}',
-                                  style: GoogleFonts.roboto(
+                                  style: GoogleFonts.montserrat(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -252,7 +252,7 @@ String showError= "";
                     },
                     child: Text(
                       'Next',
-                      style: GoogleFonts.roboto(
+                      style: GoogleFonts.montserrat(
                           color: Colors.white, fontWeight: FontWeight.bold),
                     )),
               ),

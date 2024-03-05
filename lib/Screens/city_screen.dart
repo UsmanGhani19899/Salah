@@ -83,7 +83,7 @@ class _CitySelectScreenState extends State<CitySelectScreen> {
                       borderRadius: BorderRadius.circular(15)),
                   title: Text(
                     '${cityModel?.geonames?[index].name}',
-                    style: GoogleFonts.roboto(
+                    style: GoogleFonts.montserrat(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),

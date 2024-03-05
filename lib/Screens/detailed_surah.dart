@@ -117,7 +117,7 @@ class _DetailedSurahState extends State<DetailedSurah> {
                                   child: Center(
                                     child: Text(
                                       '${index + 15}',
-                                      style: GoogleFonts.roboto(
+                                      style: GoogleFonts.montserrat(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -130,7 +130,7 @@ class _DetailedSurahState extends State<DetailedSurah> {
               },
               child: Text(
                 'Font Size',
-                style: GoogleFonts.roboto(color: Colors.blue),
+                style: GoogleFonts.montserrat(color: Colors.blue),
               ),
             )
           ],

@@ -32,12 +32,12 @@ class CustomNamazCard extends StatelessWidget {
               color: Colors.white,
               size: 18,
             ),
-            SizedBox(height: 5,),
+            SizedBox(height: 10,),
             Text(
               '$namazName',
-              style: GoogleFonts.roboto(
+              style: GoogleFonts.montserrat(
                   color: Colors.white,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w300,
                   fontSize: 18),
             ),
 
@@ -45,9 +45,9 @@ class CustomNamazCard extends StatelessWidget {
             namazTime != ""
                 ? Text(
                     namazTime??"",
-                    style: GoogleFonts.roboto(
+                    style: GoogleFonts.montserrat(
                         color: Colors.white,
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w300,
                         fontSize: 15),
                   )
                 : CircularProgressIndicator(

@@ -1,15 +1,21 @@
+import 'dart:ffi';
+
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:salah/Core/get_api.dart';
+import 'package:salah/Core/my_controller.dart';
 import 'package:salah/Models/quran_detail_model.dart';
 import 'package:salah/Screens/Activity/Recitation/text_recite.dart';
 import 'package:salah/Screens/Activity/asma_ul_husna_screen.dart';
 import 'package:salah/Screens/Activity/audio_player.dart';
 import 'package:salah/Screens/Activity/Recitation/quran_reciters.dart';
+import 'package:salah/Screens/Activity/bukhari.dart';
 import 'package:salah/Screens/Activity/tasbeeh.dart';
 import 'package:salah/Screens/Activity/tasbeehs.dart';
+import 'package:salah/Widget/app_bar_widget.dart';
 import 'package:salah/Widget/custom_card.dart';
 
 import '../../Core/dio.dart';
@@ -21,43 +27,41 @@ class ActivityScreen extends StatefulWidget {
   State<ActivityScreen> createState() => _ActivityScreenState();
 }
 
+
 final screen = [AsmaUlHusnaScreen(), TasbeehScreen()];
 final icon = [];
-final _getApi = GetApi(dio);
-QuranDetailTextModel? quranDetailTextModel;
+// final _getApi = GetApi(dio);
+// QuranDetailTextModel? quranDetailTextModel;
 class _ActivityScreenState extends State<ActivityScreen> {
-   Future<void> getDetailedSurah() async {
-    quranDetailTextModel = await _getApi.getDetailSSurah();
-    setState(() {});
-  }
+  MyController myContr = Get.put(MyController());
 
-  Future<void> apis() async {
-    // mergedList = [];
-    // fullSurah = "";
-    await getDetailedSurah();
-  }
-  @override
+  //  Future<void> getDetailedSurah() async {
+  //   quranDetailTextModel = await _getApi.getDetailSSurah();
+  //   setState(() {});
+  // }
+@override
   void initState() {
     // TODO: implement initState
+  myContr.createRewardedAd();
+   myContr.showRewardedAd();
+  //  myContr.bannerAd.load();
+   myContr.createInterstitialAd();
     super.initState();
-    apis();
+  
   }
 
+ @override
+void dispose() {
+   
+  myContr.rewardedAd.value?.dispose();
+  super.dispose();
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 80,
-          elevation: 0,
-          title: Text(
-            'Ibadat',
-            style: GoogleFonts.roboto(
-                fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-          // backgroundColor: Colors.black26,
-        ),
+        appBar:  AppBarWidget(pageName: 'Ibadat'),
         // backgroundColor: Colors.grey.shade900,
-        body: SingleChildScrollView(
+        body:  SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.symmetric(vertical: 20),
             child: Column(
@@ -85,25 +89,59 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CustomCard(
+                    // CustomCard(
+                    //   onTap: () {
+                    //     Get.to(QuranReciterScreen( ));
+                    //   },
+                    //   cardName: "Voice Recitation",
+                    //   iconData: FeatherIcons.book,
+                    // ),
+                      CustomCard(
                       onTap: () {
-                        Get.to(QuranReciterScreen(quranDetailTextModel: quranDetailTextModel!,));
+                        Get.to(BukhariHadith( ));
                       },
-                      cardName: "Voice Recitation",
+                      cardName: "Hadiths",
                       iconData: FeatherIcons.book,
                     ),
                     CustomCard(
                       cardName: "Text Recitation",
                       iconData: FeatherIcons.clock,
                       onTap: () {
-                        Get.to(TextRecitationScreen(quranDetailTextModel: quranDetailTextModel!,));
+                        Get.to(TextRecitationScreen( ));
                       },
                     ),
                   ],
                 )
+                // , Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     CustomCard(
+                //       onTap: () {
+                //         Get.to(BukhariHadith( ));
+                //       },
+                //       cardName: "Hadiths",
+                //       iconData: FeatherIcons.book,
+                //     ),
+                //     CustomCard(
+                //       cardName: "Text Recitation",
+                //       iconData: FeatherIcons.clock,
+                //       onTap: () {
+                //         Get.to(TextRecitationScreen( ));
+                //       },
+                //     ),
+                //   ],
+                // ),
+          
+            //  Container(
+            //   height: 52,
+            //   child: AdWidget(ad: myContr.bannerAd))
+            //  ,ElevatedButton(onPressed:myContr.showRewardedAd, child: Text("Show"))
+              
+                  
               ],
             ),
           ),
-        ));
+        )
+        );
   }
 }

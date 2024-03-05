@@ -47,7 +47,7 @@ class _AsmaUlHusnaScreenState extends State<AsmaUlHusnaScreen> {
           iconTheme: IconThemeData(color: Colors.white),
           title: Text(
             'Al-Asma-ul-Husna',
-            style: GoogleFonts.roboto(
+            style: GoogleFonts.montserrat(
                 fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),
@@ -74,7 +74,7 @@ class _AsmaUlHusnaScreenState extends State<AsmaUlHusnaScreen> {
                           children: [
                             Text(
                               '${index + 1}',
-                              style: GoogleFonts.roboto(color: Colors.white),
+                              style: GoogleFonts.montserrat(color: Colors.white),
                             ),
                             Image(
                               image: AssetImage('assets/images/shape.png'),
@@ -94,13 +94,13 @@ class _AsmaUlHusnaScreenState extends State<AsmaUlHusnaScreen> {
                             children: [
                               Text(
                                 'Translation: ',
-                                style: GoogleFonts.roboto(
+                                style: GoogleFonts.montserrat(
                                     fontWeight: FontWeight.w400,
                                     color: Colors.grey),
                               ),
                               Text(
                                 '${asmaUlHusnaModel?.data[index].transliteration}',
-                                style: GoogleFonts.roboto(
+                                style: GoogleFonts.montserrat(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
                               ),
@@ -110,13 +110,13 @@ class _AsmaUlHusnaScreenState extends State<AsmaUlHusnaScreen> {
                             children: [
                               Text(
                                 'Meaning: ',
-                                style: GoogleFonts.roboto(
+                                style: GoogleFonts.montserrat(
                                     fontWeight: FontWeight.w400,
                                     color: Colors.grey),
                               ),
                               Text(
                                 '${asmaUlHusnaModel?.data[index].en.meaning}',
-                                style: GoogleFonts.roboto(
+                                style: GoogleFonts.montserrat(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
                               ),

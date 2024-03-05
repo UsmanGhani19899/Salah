@@ -66,7 +66,9 @@ dependencies:
   # timezone: ^0.9.2
   # icons_launcher: ^2.1.7
   flutter_launcher_icons: ^0.13.1
-  google_mobile_ads: ^4.0.0
+  google_mobile_ads: ^4.0.0 
+  
+  # home_widget: ^0.4.1
   # flutter_native_timezone: ^2.0.0
   
   # location: ^5.0.3
@@ -103,6 +105,7 @@ flutter:
   assets:
     - assets/images/
     - assets/mp3/
+    - assets/Json/bukhari.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

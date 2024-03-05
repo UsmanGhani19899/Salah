@@ -1,7 +1,9 @@
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:salah/Core/my_controller.dart';
 import 'package:salah/Screens/Activity/activity.dart';
 import 'package:salah/Screens/Activity/asma_ul_husna_screen.dart';
 import 'package:salah/Screens/qibla.dart';
@@ -16,7 +18,7 @@ class SalahBottomBar extends StatefulWidget {
   @override
   State<SalahBottomBar> createState() => _SalahBottomBarState();
 }
-
+MyController myContr = Get.put(MyController());
 final screen = [
   HomeScreen(),
   PrayerTimeScreen(),
@@ -27,10 +29,29 @@ int _currentIndex = 0;
 
 class _SalahBottomBarState extends State<SalahBottomBar> {
 
+@override
+void initState() {
+  super.initState();
+ 
+}
 
+@override
+void dispose() {
+  myContr.bannerAd!.dispose();
+  super.dispose();
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Colors.blue,
+      //   shape: RoundedRectangleBorder(
+
+      //     borderRadius: BorderRadius.circular(30)
+      //   ),
+      //   onPressed: (){}),
+      
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar:Container(
         color: Color(0xff141414),
         // decoration: BoxDecoration(
@@ -38,14 +59,16 @@ class _SalahBottomBarState extends State<SalahBottomBar> {
         height: 80,
         // margin: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
         child: BottomNavigationBar(
+          
+          selectedItemColor: Colors.white,
             elevation: 0,
             type: BottomNavigationBarType.fixed,
-            fixedColor: Colors.white,
+            // fixedColor: Colors.white,
             showSelectedLabels: true,
             // unselectedLabelStyle: TextStyle(color: Colors.white),
-            unselectedItemColor: Colors.white,
+            unselectedItemColor: Colors.grey.shade200,
             showUnselectedLabels: true,
-            backgroundColor: Colors.black,
+            backgroundColor: Colors.grey.shade900.withOpacity(0.3),
             currentIndex: _currentIndex,
             onTap: (index) {
               setState(() {
@@ -81,8 +104,18 @@ class _SalahBottomBarState extends State<SalahBottomBar> {
                   label: "Activity"),
             ]),
       ),
-      body: IndexedStack(children:screen,index: _currentIndex,),
-      backgroundColor: Colors.white,
+      body: Stack(
+        children: [
+
+     IndexedStack(children:screen,
+     
+     index: _currentIndex,),
+        // Container(height: Get.height*0.12,  child: AdWidget(ad: myContr.bannerAd),),
+          
+        ],
+
+      ),
+      backgroundColor: Colors.black,
     );
   }
 

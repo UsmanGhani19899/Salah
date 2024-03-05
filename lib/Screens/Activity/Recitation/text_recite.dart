@@ -1,23 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:salah/Core/my_controller.dart';
 import 'package:salah/Models/quran_detail_model.dart';
 import 'package:salah/Screens/Activity/Recitation/listen_quran.dart';
 import 'package:salah/Screens/Activity/Recitation/quran_text.dart';
 import 'package:salah/Widget/custom_shimmer.dart';
 
 class TextRecitationScreen extends StatefulWidget {
-    final QuranDetailTextModel quranDetailTextModel;
+ 
 
-  const TextRecitationScreen({super.key, required this.quranDetailTextModel});
+  const TextRecitationScreen({super.key,  });
 
   @override
   State<TextRecitationScreen> createState() => _TextRecitationScreenState();
 }
- 
+   MyController myContr = Get.put(MyController());
 class _TextRecitationScreenState extends State<TextRecitationScreen> {
    List<String> mergedList = [];
   String fullSurah = "";
+
+  Future<void> apis() async {
+    // mergedList = [];
+    // fullSurah = "";
+await myContr.getDetailedSurah();
+    // await getDetailedSurah();
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    apis();
+  }
+
   @override
   Widget build(BuildContext context) {
     return   Scaffold(
@@ -36,16 +51,16 @@ class _TextRecitationScreenState extends State<TextRecitationScreen> {
           // elevation: 9,
           title: Text(
             "Text Surahs",
-            style: GoogleFonts.roboto(
+            style: GoogleFonts.montserrat(
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),
           ),
         ),
        
-      body: widget.quranDetailTextModel.data.surahs.isNotEmpty ?? false
+      body: Obx(() => myContr.quranDetailTextModel.value?.data.surahs.isNotEmpty ?? false
             ? 
   ListView.builder(
               addAutomaticKeepAlives: true,
-                itemCount: widget.quranDetailTextModel?.data.surahs.length,
+                itemCount: myContr.quranDetailTextModel.value?.data.surahs.length,
                 itemBuilder: (context, index) {
                   // if (quranDetailTextModel?.data.surahs[index].revelationType.name ==
                   //     "Meccan") {
@@ -81,7 +96,7 @@ class _TextRecitationScreenState extends State<TextRecitationScreen> {
                           children: [
                             Text(
                               '${index + 1}',
-                              style: GoogleFonts.roboto(color: Colors.white),
+                              style: GoogleFonts.montserrat(color: Colors.white),
                             ),
                             Image(
                               image: AssetImage('assets/images/shape.png'),
@@ -90,8 +105,8 @@ class _TextRecitationScreenState extends State<TextRecitationScreen> {
                           ],
                         ),
                         title: Text(
-                          '${widget.quranDetailTextModel?.data.surahs[index].name}',
-                          style: GoogleFonts.roboto(color: Colors.white),
+                          '${myContr.quranDetailTextModel.value?.data.surahs[index].name}',
+                          style: GoogleFonts.montserrat(color: Colors.white),
                         ),
                         trailing: GestureDetector(
                           onTap: () {
@@ -100,11 +115,11 @@ class _TextRecitationScreenState extends State<TextRecitationScreen> {
                             fullSurah = "";
                             for (int i = 0;
                                 i <
-                                    widget.quranDetailTextModel!
+                                    myContr.quranDetailTextModel.value!
                                         .data.surahs[index].ayahs.length;
                                 i++) {
                               mergedList.add(
-                                '${widget.quranDetailTextModel!.data.surahs[index].ayahs[i].text.replaceAll('بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ', "")}',
+                                '${myContr.quranDetailTextModel.value!.data.surahs[index].ayahs[i].text.replaceAll('بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ', "")}',
                               );
                             }
                             fullSurah = '${mergedList}';
@@ -115,7 +130,7 @@ class _TextRecitationScreenState extends State<TextRecitationScreen> {
   
                             Get.to(() => QuranTextEdition(
                               bismillah: 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ',
-                              fullSurah:    '$fullSurah',surahName: widget.quranDetailTextModel.data.surahs[index].name,));
+                              fullSurah:    '$fullSurah',surahName: myContr.quranDetailTextModel.value!.data.surahs[index].name,));
                                 
                            
                             
@@ -154,7 +169,7 @@ class _TextRecitationScreenState extends State<TextRecitationScreen> {
                         ),
                         // subtitle: Text(
                         //   '${surahType}',
-                        //   style: GoogleFonts.roboto(color: Colors.white),
+                        //   style: GoogleFonts.montserrat(color: Colors.white),
                         // ),
                         // trailing: GestureDetector(
                         //   onTap: () async {
@@ -178,32 +193,32 @@ class _TextRecitationScreenState extends State<TextRecitationScreen> {
                         //   },
                         //   child: Text(
                         //     'Profile',
-                        //     style: GoogleFonts.roboto(
+                        //     style: GoogleFonts.montserrat(
                         //         color: Colors.blue, fontWeight: FontWeight.bold),
                         //   ),
                         // ),
                         children: [
                           // Text(
                           //   'Surah No: ${quranDetailTextModel?.data.surahs[index].number}   Ayah: ${quranDetailTextModel?.data.surahs[index].ayahs.length}',
-                          //   style: GoogleFonts.roboto(color: Colors.grey),
+                          //   style: GoogleFonts.montserrat(color: Colors.grey),
                           // ),
                           buildBulletPoint(
-                              'Surah No: ${widget.quranDetailTextModel?.data.surahs[index].number}'),
+                              'Surah No: ${myContr.quranDetailTextModel.value?.data.surahs[index].number}'),
                           buildBulletPoint(
-                              'Ayah: ${widget.quranDetailTextModel?.data.surahs[index].ayahs.length}'),
+                              'Ayah: ${myContr.quranDetailTextModel.value?.data.surahs[index].ayahs.length}'),
                           // SizedBox(
                           //   height: 10,
                           // ),
                           // Text(
                           //   'Ruku: ${quranDetailTextModel?.data.surahs[index].ayahs.last.ruku}',
-                          //   style: GoogleFonts.roboto(color: Colors.grey),
+                          //   style: GoogleFonts.montserrat(color: Colors.grey),
                           // ),
                         ],
                       ),
                     ),
                   );
                 }): CustomShimmer()
-  
+  )
     );
      
   }
@@ -220,7 +235,7 @@ class _TextRecitationScreenState extends State<TextRecitationScreen> {
           Expanded(
               child: Text(
             text,
-            style: GoogleFonts.roboto(color: Colors.grey),
+            style: GoogleFonts.montserrat(color: Colors.grey),
           )),
         ],
       ),

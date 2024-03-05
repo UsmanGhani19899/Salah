@@ -23,10 +23,10 @@ class _GetApi implements GetApi {
     double latitude,
     double longitude,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<NearbyPlaces>(Options(
       method: 'GET',
@@ -54,10 +54,10 @@ class _GetApi implements GetApi {
     String city,
     String day,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<PrayerTimeModel>(Options(
       method: 'GET',
@@ -81,10 +81,10 @@ class _GetApi implements GetApi {
 
   @override
   Future<AsmaUlHusnaModel> getName() async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<AsmaUlHusnaModel>(Options(
       method: 'GET',
@@ -108,10 +108,10 @@ class _GetApi implements GetApi {
 
   @override
   Future<IslamicCalenderModel> getCalender(String date) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<IslamicCalenderModel>(Options(
       method: 'GET',
@@ -135,10 +135,10 @@ class _GetApi implements GetApi {
 
   @override
   Future<QuranReciter> getReciters() async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<QuranReciter>(Options(
       method: 'GET',
@@ -162,10 +162,10 @@ class _GetApi implements GetApi {
 
   @override
   Future<SurahModel> getSurah() async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<SurahModel>(Options(
       method: 'GET',
@@ -189,10 +189,10 @@ class _GetApi implements GetApi {
 
   @override
   Future<QuranDetailTextModel> getDetailSSurah() async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<QuranDetailTextModel>(Options(
       method: 'GET',
@@ -221,10 +221,10 @@ class _GetApi implements GetApi {
     double deslatitude,
     double deslongitude,
   ) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<GooleMapDirectionModel>(Options(
       method: 'GET',
@@ -248,10 +248,10 @@ class _GetApi implements GetApi {
 
   @override
   Future<CountriesModel> getCountries() async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<CountriesModel>(Options(
       method: 'GET',
@@ -275,10 +275,10 @@ class _GetApi implements GetApi {
 
   @override
   Future<CityModel> getCity(String country) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<CityModel>(Options(
       method: 'GET',
@@ -297,6 +297,33 @@ class _GetApi implements GetApi {
               baseUrl,
             ))));
     final value = CityModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<BukhariHadithModel> bukhariHadith() async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result =
+        await _dio.fetch<Map<String, dynamic>>(_setStreamType<BukhariHadithModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'https://raw.githubusercontent.com/A7med3bdulBaset/hadith-json/main/db/by_book/the_9_books/bukhari.json',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = BukhariHadithModel.fromJson(_result.data!);
     return value;
   }
 

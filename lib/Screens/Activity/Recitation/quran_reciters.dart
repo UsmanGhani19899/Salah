@@ -12,13 +12,14 @@ import 'package:salah/Screens/Activity/Recitation/listen_quran.dart';
 import 'package:salah/Screens/Activity/audio_player.dart';
 import 'package:salah/Screens/Activity/reciter_profile.dart';
 import 'package:salah/Screens/detailed_surah.dart';
+import 'package:salah/Screens/home.dart';
 import 'package:salah/Widget/custom_roundedBtn.dart';
 import 'package:salah/Widget/custom_shimmer.dart';
 import 'package:shimmer/shimmer.dart';
 
 class QuranReciterScreen extends StatefulWidget {
-  final QuranDetailTextModel quranDetailTextModel;
-  const QuranReciterScreen({super.key, required this.quranDetailTextModel});
+ 
+  const QuranReciterScreen({super.key,  });
 
   @override
   State<QuranReciterScreen> createState() => _QuranReciterScreenState();
@@ -43,11 +44,15 @@ class _QuranReciterScreenState extends State<QuranReciterScreen> {
   List<String> mergedList = [];
   String surahType = "";
   String? fileNO;
+
+  Future<void> api()async{
+    await myContr.getDetailedSurah();
+  }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+api();
     fileNO = "";
     // apis();
   }
@@ -70,14 +75,14 @@ class _QuranReciterScreenState extends State<QuranReciterScreen> {
           // elevation: 9,
           title: Text(
             "Surahs",
-            style: GoogleFonts.roboto(
+            style: GoogleFonts.montserrat(
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),
           ),
         ),
-        body: widget.quranDetailTextModel.data.surahs.isNotEmpty ?? false
+        body: myContr.quranDetailTextModel.value?.data.surahs.isNotEmpty ?? false
             ? ListView.builder(
               addAutomaticKeepAlives: true,
-                itemCount: widget.quranDetailTextModel?.data.surahs.length,
+                itemCount: myContr.quranDetailTextModel.value?.data.surahs.length,
                 itemBuilder: (context, index) {
                   // if (quranDetailTextModel?.data.surahs[index].revelationType.name ==
                   //     "Meccan") {
@@ -113,7 +118,7 @@ class _QuranReciterScreenState extends State<QuranReciterScreen> {
                           children: [
                             Text(
                               '${index + 1}',
-                              style: GoogleFonts.roboto(color: Colors.white),
+                              style: GoogleFonts.montserrat(color: Colors.white),
                             ),
                             Image(
                               image: AssetImage('assets/images/shape.png'),
@@ -122,16 +127,16 @@ class _QuranReciterScreenState extends State<QuranReciterScreen> {
                           ],
                         ),
                         title: Text(
-                          '${widget.quranDetailTextModel?.data.surahs[index].name}',
-                          style: GoogleFonts.roboto(color: Colors.white),
+                          '${myContr.quranDetailTextModel.value?.data.surahs[index].name}',
+                          style: GoogleFonts.montserrat(color: Colors.white),
                         ),
                         trailing: GestureDetector(
                           onTap: () {
                             Get.to(() => ListenQuranScreen(
-                                  surahName: widget.quranDetailTextModel
-                                          ?.data.surahs[index].name ??
+                                  surahName: myContr.quranDetailTextModel
+                                          .value?.data.surahs[index].name ??
                                       "",
-                                  quranDetailTextModel: widget.quranDetailTextModel
+                                  quranDetailTextModel: myContr.quranDetailTextModel.value
                                           ?.data.surahs[index].ayahs ??
                                       [],
                                 ));
@@ -169,7 +174,7 @@ class _QuranReciterScreenState extends State<QuranReciterScreen> {
                         ),
                         // subtitle: Text(
                         //   '${surahType}',
-                        //   style: GoogleFonts.roboto(color: Colors.white),
+                        //   style: GoogleFonts.montserrat(color: Colors.white),
                         // ),
                         // trailing: GestureDetector(
                         //   onTap: () async {
@@ -193,25 +198,25 @@ class _QuranReciterScreenState extends State<QuranReciterScreen> {
                         //   },
                         //   child: Text(
                         //     'Profile',
-                        //     style: GoogleFonts.roboto(
+                        //     style: GoogleFonts.montserrat(
                         //         color: Colors.blue, fontWeight: FontWeight.bold),
                         //   ),
                         // ),
                         children: [
                           // Text(
                           //   'Surah No: ${quranDetailTextModel?.data.surahs[index].number}   Ayah: ${quranDetailTextModel?.data.surahs[index].ayahs.length}',
-                          //   style: GoogleFonts.roboto(color: Colors.grey),
+                          //   style: GoogleFonts.montserrat(color: Colors.grey),
                           // ),
                           buildBulletPoint(
-                              'Surah No: ${widget.quranDetailTextModel?.data.surahs[index].number}'),
+                              'Surah No: ${myContr.quranDetailTextModel.value?.data.surahs[index].number}'),
                           buildBulletPoint(
-                              'Ayah: ${widget.quranDetailTextModel?.data.surahs[index].ayahs.length}'),
+                              'Ayah: ${myContr.quranDetailTextModel.value?.data.surahs[index].ayahs.length}'),
                           // SizedBox(
                           //   height: 10,
                           // ),
                           // Text(
                           //   'Ruku: ${quranDetailTextModel?.data.surahs[index].ayahs.last.ruku}',
-                          //   style: GoogleFonts.roboto(color: Colors.grey),
+                          //   style: GoogleFonts.montserrat(color: Colors.grey),
                           // ),
                         ],
                       ),
@@ -234,7 +239,7 @@ class _QuranReciterScreenState extends State<QuranReciterScreen> {
           Expanded(
               child: Text(
             text,
-            style: GoogleFonts.roboto(color: Colors.grey),
+            style: GoogleFonts.montserrat(color: Colors.grey),
           )),
         ],
       ),

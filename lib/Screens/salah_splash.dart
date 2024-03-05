@@ -18,6 +18,7 @@ String? yourCity = constant.box.read('selectedCity');
 class _SalahSplashState extends State<SalahSplash> {
  @override
   void initState() {
+    myContr.handleLocationPermission();
       Timer(Duration(seconds: 3), () {
       // String selectedCountry = constant.box.read('selectedCountry');
       if (yourCountry!=null&& yourCountry!.isNotEmpty )  {
@@ -34,7 +35,7 @@ class _SalahSplashState extends State<SalahSplash> {
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: Color(0xff172222),
-      body: Center(child:Image(image: AssetImage('assets/images/splash.png'),)),
+      body: Center(child:Image(image: AssetImage('assets/images/SALAH-removebg-preview.png'),)),
     );
   }
 }

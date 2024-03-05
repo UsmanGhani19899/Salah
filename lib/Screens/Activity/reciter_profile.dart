@@ -55,7 +55,7 @@ class _ReciterProfileState extends State<ReciterProfile> {
                 children: [
                   Text(
                     '${widget.reciterName}',
-                    style: GoogleFonts.roboto(color: Colors.black),
+                    style: GoogleFonts.montserrat(color: Colors.black),
                   ),
                   Text('${widget.totalSurah}', textScaleFactor: 1),
                 ],

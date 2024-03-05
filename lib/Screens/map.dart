@@ -130,7 +130,7 @@ LatLng _news = LatLng(33.567997728, 72.635997456);
         body: widget.lat == 0 && widget.lnng == 0
             ? Center(
                 child: CircularProgressIndicator(
-                  color: Colors.black,
+                  color: Color(0xff35c55e),
                 ),
               )
             : GoogleMap(

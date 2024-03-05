@@ -80,7 +80,7 @@ class _QuranPlayerScreenState extends State<QuranPlayerScreen> {
                   borderRadius: BorderRadius.circular(25)),
               child: Text(
                 '${widget.surahName}',
-                style: GoogleFonts.roboto(
+                style: GoogleFonts.montserrat(
                     fontWeight: FontWeight.bold, fontSize: 30),
               ),
             ),
